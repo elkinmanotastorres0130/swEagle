@@ -1,0 +1,58 @@
+<div class="minimal-dashboard-container no-scroll">
+    <!-- Video de fondo -->
+    <video autoplay muted loop id="bgVideo">
+        <source src="assets/videos/dashboard.mp4" type="video/mp4">
+    </video>
+
+    <!-- Header -->
+    <header class="minimal-header">
+        <button class="back-button" (click)="goBack()">
+            <fa-icon [icon]="iconArrowLeft"></fa-icon>
+        </button>
+        <h1 class="right-aligned-title">Evidencias</h1>
+        <div class="header-spacer"></div>
+    </header>
+
+    <!-- Contenido principal -->
+    <main class="minimal-main-content">
+        <!-- Sección del Calendario -->
+        <div class="glassmorphism-card calendar-section">
+            <h2><fa-icon [icon]="iconCalendar"></fa-icon> Seleccionar Fecha</h2>
+            <input type="date" [(ngModel)]="selectedDate" [max]="maxDate" class="custom-date-picker">
+        </div>
+
+        <!-- Sección de Descargas -->
+        <div class="glassmorphism-card download-section">
+            <h2><fa-icon [icon]="iconDownload"></fa-icon> Descargar</h2>
+
+            <div class="evidence-grid">
+                <div class="evidence-row">
+                    <span class="evidence-label">Evidencias:</span>
+                    <span class="evidence-counter">20</span>
+                    <button class="download-btn glassmorphism-btn accent">
+                        <fa-icon [icon]="iconDownload"></fa-icon>
+                    </button>
+                </div>
+
+                <div class="evidence-row">
+                    <span class="evidence-label">Formato Único:</span>
+                    <span class="evidence-counter">20</span>
+                    <button class="download-btn glassmorphism-btn accent" (click)="descargarFormatoUnico()"
+                        [disabled]="isLoading">
+                        <fa-icon [icon]="iconDownload"></fa-icon>
+                        <span *ngIf="isLoading" class="loading-spinner"></span>
+                    </button>
+                </div>
+            </div>
+
+            <button class="download-all-btn">
+                <fa-icon [icon]="iconCloudDownload"></fa-icon> Descargar Todo
+            </button>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="minimal-footer">
+        <p>Copyright © 2025. Todos los derechos reservados.</p>
+    </footer>
+</div>

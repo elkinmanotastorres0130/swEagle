@@ -1,0 +1,93 @@
+<div class="video-view-container">
+    <!-- Video de fondo -->
+    <video autoplay muted loop id="bgVideo">
+        <source src="assets/videos/dashboard.mp4" type="video/mp4">
+        Tu navegador no soporta videos HTML5.
+    </video>
+
+    <!-- Header -->
+    <header class="dashboard-header">
+        <button class="logout-button" (click)="goBack()">
+            <fa-icon [icon]="faArrowLeft"></fa-icon> <!-- Ícono de flecha hacia atrás -->
+        </button>
+        <div class="contador-videos">
+            <p>{{ videoIndex + 1 }} / {{ getTotalVideos() }}</p>
+        </div>
+        <h1>Video</h1>
+    </header>
+
+    <!-- Contenedor del video y los botones -->
+    <main class="video-section">
+        <!-- Video -->
+        <div class="video-container">
+              
+            <video #videoElement controls autoplay (loadeddata)="onVideoLoaded()" (error)="onVideoError()">
+                <source [src]="videoUrl" type="video/mp4">
+                Tu navegador no soporta la reproducción de video.
+            </video>
+        </div>
+
+        <!-- Contenedor para las capturas -->
+        <div class="capturas-container">
+            <!-- Captura 1 -->
+            <div class="captura" *ngIf="captura1">
+                <img [src]="captura1" alt="Captura de video">
+                <button class="eliminar-captura" (click)="eliminarCaptura(1)">X</button>
+            </div>
+
+            <!-- Captura 2 -->
+            <div class="captura" *ngIf="captura2">
+                <img [src]="captura2" alt="Captura de video">
+                <button class="eliminar-captura" (click)="eliminarCaptura(2)">X</button>
+            </div>
+
+            <!-- Contenedor para los inputs y el botón de enviar -->
+            <div class="inputs-container" *ngIf="captura1">
+                <!-- Campos de entrada para placa y dirección -->
+                <div class="input-container">
+                    <div class="input-group">
+                        <input id="placa" [(ngModel)]="placa" placeholder="Ingrese la placa" (input)="convertirAMayusculas('placa')">
+                    </div>
+                    <div class="input-group">
+                        <input id="direccion" [(ngModel)]="direccion" placeholder="Ingrese la dirección" (input)="convertirAMayusculas('direccion')">
+                    </div>
+                </div>
+
+                <!-- Botón Enviar -->
+                <button class="enviar-button" (click)="enviarDatos()">Enviar</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Contenedor para los botones -->
+    <div class="botones-container">
+        <button (click)="capturarImagen()">Capturar</button>
+        <button (click)="abrirModalRechazar()">Rechazar</button>
+    </div>
+
+    <!-- Modal de Rechazo -->
+<div class="modal" *ngIf="modalRechazarAbierta">
+    <div class="modal-contenido">
+      <span class="cerrar-modal" (click)="cerrarModalRechazar()">&times;</span>
+      <h2>Rechazar Video</h2>
+      
+      <!-- Imagen del video -->
+      <img [src]="imagenVideoRechazo" alt="Video rechazado" class="imagen-rechazo">
+  
+      <!-- Combobox de causales -->
+      <select [(ngModel)]="causalSeleccionada">
+        <option *ngFor="let causal of causales" [value]="causal.id_causal">
+          {{ causal.causal }}
+        </option>
+      </select>
+  
+      <!-- Botón para confirmar el rechazo -->
+      <button (click)="confirmarRechazo()">Confirmar Rechazo</button>
+    </div>
+  </div>
+
+    <!-- Footer -->
+    <footer class="dashboard-footer">
+        <p>Copyright © 2025. Todos los derechos reservados.</p>
+    </footer>
+</div>

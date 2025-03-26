@@ -1,0 +1,105 @@
+/* Estilos para el video de fondo */
+#bgVideo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1; /* Asegura que el video esté detrás del contenido */
+  filter: brightness(0.6);
+}
+
+/* Contenedor principal del dashboard */
+.dashboard-container {
+  position: relative;
+  z-index: 1; /* Asegura que el contenido esté sobre el video */
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Asegura que el footer esté al final */
+  background: rgba(15, 23, 42, 0.7);
+}
+
+/* Header */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: rgba(15, 23, 42, 0.7);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dashboard-header h1 {
+  margin: 0 auto;
+  font-size: 1.5rem;
+  font-weight: 300;
+  letter-spacing: 1px;
+  font-size: 2rem;
+  color: #fff;
+}
+
+/* Botón de cerrar sesión */
+.logout-button {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.logout-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.logout-button fa-icon {
+  font-size: 1.2rem;
+}
+
+/* Contenido principal */
+.dashboard-main {
+  flex: 1; /* Ocupa el espacio restante */
+  padding: 20px;
+}
+
+/* Estilos para la lista de opciones */
+.dashboard-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.dashboard-list li {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  border-radius: 10px;
+  flex: 1 1 calc(25% - 20px);
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.dashboard-list li:hover {  
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateX(-3px);
+}
+
+/* Footer */
+.dashboard-footer {
+  text-align: center;
+  padding: 10px;
+  background: rgba(15, 23, 42, 0.7); /* Fondo oscuro con transparencia */
+  font-size: 0.8rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1); /* Borde superior sutil */
+  opacity: 0.7;
+  flex-shrink: 0;
+}

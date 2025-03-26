@@ -1,0 +1,411 @@
+/* Estilos base minimalistas pero futuristas */
+.minimal-dashboard-container {
+    position: relative;
+    min-height: 100vh;
+    color: #fff;
+    overflow: hidden;
+}
+
+#bgVideo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    filter: brightness(0.6);
+}
+
+/* Header minimalista */
+.minimal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 25px;
+    background: rgba(15, 23, 42, 0.7);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    flex-shrink: 0;
+}
+
+.minimal-header h1 {
+    margin: 0 auto;
+    font-size: 1.5rem;
+    font-weight: 300;
+    letter-spacing: 1px;
+    text-align: right;
+    color: #fff;
+}
+
+/* Estilos para el date picker */
+.date-picker {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+    align-items: center;
+}
+
+.date-picker input[type="date"] {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    font-family: inherit;
+    flex: 1;
+    max-width: 200px;
+}
+
+.date-picker input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    opacity: 0.8;
+}
+
+/* Mensaje de error */
+.error-message {
+    color: #ff6b6b;
+    margin: 10px 0;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+/* Estado de carga */
+.loading-spinner {
+    margin: 20px auto;
+    text-align: center;
+}
+
+/* Deshabilitar botón cuando no hay archivos */
+.glassmorphism-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.back-button {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    z-index: 2;
+}
+
+.back-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(-3px);
+}
+
+/* Contenido principal centrado */
+.minimal-main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    padding: 20px 0; 
+    min-height: calc(100vh - 120px);
+    overflow: hidden;
+}
+
+/* Tarjetas con efecto  */
+.glassmorphism-card {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 100%;
+    max-width: 500px;
+    padding: 25px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-sizing: border-box;
+}
+
+.glassmorphism-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.glassmorphism-card h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-weight: 300;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Sección de Descarga */
+.download-section {
+    text-align: center;
+}
+
+.pending-files {
+    margin: 25px 0;
+}
+
+.counter {
+    font-size: 3.5rem;
+    font-weight: 200;
+    background: linear-gradient(135deg, #38b6ff, #7b2cbf);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: block;
+    line-height: 1;
+}
+
+.label {
+    opacity: 0.7;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}
+
+/* Sección de Carga */
+.upload-section {
+    padding: 25px;
+    width: 100%;
+    max-width: 500px;
+    box-sizing: border-box;
+}
+
+/* Contenedor del archivo seleccionado */
+.file-info-container {
+    width: 100%;
+    margin-bottom: 15px;
+    overflow: hidden;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.file-info {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.file-name {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex-grow: 1;
+    padding-right: 10px;
+}
+
+.clear-file-btn {
+    background: transparent;
+    border: none;
+    color: #ff6b6b;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    flex-shrink: 0;
+}
+
+.clear-file-btn:hover {
+    transform: scale(1.1);
+}
+
+/* Área de Drag and Drop */
+.file-upload-wrapper {
+    position: relative;
+    border: 2px dashed rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    padding: 2rem;
+    text-align: center;
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.drag-over {
+    border-color: #38b6ff !important;
+    background: rgba(56, 182, 255, 0.1) !important;
+}
+
+.drop-instructions {
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.drop-instructions p {
+    margin: 0.5rem 0 0;
+    opacity: 0.8;
+    font-size: 0.9rem;
+}
+
+.upload-icon {
+    font-size: 2rem;
+    opacity: 0.7;
+    margin-bottom: 10px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Contenedor de botones */
+.upload-buttons-container {
+    display: flex;
+    width: 100%;
+    gap: 10px;
+    align-items: center;
+}
+
+.button-spacer {
+    width: 10px;
+    flex-shrink: 0;
+}
+
+/* Botones estilo futurista */
+.glassmorphism-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+    backdrop-filter: blur(5px);
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.glassmorphism-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.glassmorphism-btn.primary {
+    background: rgba(56, 182, 255, 0.15);
+    border-color: rgba(56, 182, 255, 0.3);
+}
+
+.glassmorphism-btn.accent {
+    background: rgba(132, 94, 247, 0.15);
+    border-color: rgba(132, 94, 247, 0.3);
+}
+
+.glassmorphism-btn fa-icon {
+    font-size: 0.9rem;
+}
+
+/* Footer minimalista */
+.minimal-footer {
+    text-align: center;
+    padding: 15px;
+    background: rgba(15, 23, 42, 0.7);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.8rem;
+    opacity: 0.7;
+    flex-shrink: 0;
+}
+
+/* Efectos de borde luminoso */
+.glassmorphism-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 16px;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(56, 182, 255, 0.3), rgba(132, 94, 247, 0.3));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+}
+
+/* Estilos para SweetAlert claro */
+.swal2-error-container {
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.error-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem auto;
+    border: 1px solid #ddd;
+}
+
+.error-table th {
+    background-color: #f8f9fa;
+    padding: 12px 15px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.error-table td {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.error-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.custom-swal-popup {
+    background: white !important;
+    color: #333 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
+}
+
+.custom-swal-title {
+    color: #d33 !important;
+    font-size: 1.5rem !important;
+    margin-bottom: 1rem !important;
+}
+
+.custom-swal-html {
+    color: #555 !important;
+    font-size: 1rem !important;
+    text-align: center !important;
+}
+
+.custom-swal-confirm {
+    background-color: #3085d6 !important;
+    border: none !important;
+    padding: 8px 20px !important;
+    border-radius: 4px !important;
+    font-size: 1rem !important;
+    margin-top: 1rem !important;
+}
+
+.custom-swal-confirm:hover {
+    background-color: #2a75c1 !important;
+}

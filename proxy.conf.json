@@ -1,0 +1,10 @@
+{
+  "/services": {
+    "target": "http://sweagle.cerofatalidad.co", 
+    "secure": false, 
+    "changeOrigin": true, 
+    "pathRewrite": { "^/services": "" }, 
+    "logLevel": "debug" 
+  }
+}
+

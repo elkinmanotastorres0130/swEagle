@@ -1,0 +1,451 @@
+/* Estilos para el video de fondo */
+#bgVideo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+  /* Asegura que el video esté detrás del contenido */
+}
+
+/* Contenedor principal */
+.video-view-container {
+  position: relative;
+  z-index: 1;
+  /* Asegura que el contenido esté sobre el video */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  /* Asegura que el footer esté al final */
+  background: rgba(0, 0, 0, 0.5);
+  /* Fondo oscuro con transparencia */
+  color: #fff;
+  /* Texto en color blanco */
+  padding: 20px;
+  /* Espaciado interno */
+  gap: 20px;
+  /* Espacio entre el video y el contenedor de la imagen */
+}
+
+/* Header */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 5%; /* Menos padding vertical, más horizontal (relativo) */
+  background: rgba(15, 23, 42, 0.7);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  backdrop-filter: blur(10px);
+  width: 100%; /* Ocupa todo el ancho disponible */
+  box-sizing: border-box; /* El padding no afecta el ancho total */
+  margin: 0; /* Elimina márgenes predeterminados */
+  top: 0; /* Lo posiciona en la parte superior */
+}
+
+.dashboard-header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 300;
+  letter-spacing: 1px;
+  color: #fff;
+  /* Texto en color blanco */
+}
+
+.right-aligned-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 300;
+  letter-spacing: 1px;
+  position: absolute;
+  right: 25px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: linear-gradient(90deg, #38b6ff, #7b2cbf);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  padding-right: 10px;
+}
+
+/* Botón de flecha hacia atrás */
+.logout-button {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.logout-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateX(-3px);
+}
+
+.logout-button fa-icon {
+  font-size: 1.2rem;
+}
+
+/* Contenido principal */
+.video-section {
+  flex: 1;
+  /* Ocupa el espacio restante */
+  padding: 20px;
+  display: flex;
+  gap: 20px;
+  /* Espacio entre el video y las capturas */
+  align-items: flex-start;
+  /* Alinear el contenido al inicio */
+}
+
+/* Contenedor del video */
+.video-container {
+  flex: 1;
+  /* Ocupa el espacio disponible */
+  max-width: 60%;
+  /* Ancho máximo del video */
+}
+
+.loading {
+  text-align: center;
+  font-size: 1.5rem;
+  color: #fff;
+  margin-top: 20px;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos del video */
+video {
+  width: 100%;
+  /* Ancho completo del contenedor */
+  height: 70vh;
+  /* Altura del video */
+  border-radius: 8px;
+  /* Bordes redondeados */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  /* Sombra */
+  background: rgb(255, 255, 255);
+  /* Fondo semitransparente */
+}
+
+/* Contenedor para las capturas */
+.capturas-container {
+  flex: 1;
+  /* Ocupa el espacio disponible */
+  display: flex;
+  gap: 20px;
+  /* Espacio entre las capturas */
+  max-width: 40%;
+  /* Ancho máximo del contenedor de capturas */
+  flex-direction: column;
+  /* Permite que los elementos se ajusten */
+  align-items: flex-start;
+  /* Alinea las imágenes a la izquierda */
+}
+
+/* Estilo para cada captura */
+.captura {
+  position: relative;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  /* Borde semitransparente */
+  border-radius: 8px;
+  padding: 5px;
+  background: rgba(255, 255, 255, 0.1);
+  /* Fondo semitransparente */
+  width: auto;
+  /* Ancho completo del contenedor */
+}
+
+/* Estilo para la imagen capturada */
+.captura img {
+  width: 150px;
+  /* Ancho completo del contenedor */
+  height: auto;
+  border-radius: 8px;
+  display: block;
+}
+
+/* Botón de eliminar captura */
+.eliminar-captura {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.eliminar-captura:hover {
+  background-color: darkred;
+}
+
+/* Contenedor de los botones */
+.botones-container {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: inline-flex;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+  backdrop-filter: blur(5px);
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  /* Centrar el botón de captura */
+  gap: 10px;
+  /* Espacio entre los botones */
+}
+
+/* Estilos del botón de captura */
+button {
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.2);
+  /* Fondo semitransparente */
+  color: #fff;
+  /* Texto en color blanco */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s ease;
+  white-space: nowrap;
+  /* Evitar que el texto del botón se divida en varias líneas */
+}
+
+button:hover {
+  background: rgba(56, 182, 255, 0.15);
+    border-color: rgba(56, 182, 255, 0.3);
+    transform: translateY(-2px);
+  /* Fondo semitransparente al hacer hover */
+}
+
+
+/* Contenedor para la imagen capturada */
+.imagen-capturada-container {
+  background: rgba(255, 255, 255, 0.1);
+  /* Fondo semitransparente */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  /* Ancho completo */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  /* Espacio entre los elementos dentro del contenedor */
+}
+
+.imagen-capturada-container h3 {
+  font-size: 1.2rem;
+  color: #fff;
+  /* Texto en color blanco */
+  margin-bottom: 15px;
+}
+
+.imagen-capturada-container img {
+  width: 100%;
+  height: auto;
+  /* Altura automática */
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+/* Campos de entrada */
+.inputs-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  /* Espacio entre los elementos */
+  width: 40%;
+  /* Ancho del contenedor de inputs */
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #fff;
+  /* Texto en color blanco */
+}
+
+.inputs-container input {
+  padding: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  /* Borde semitransparente */
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  /* Fondo semitransparente */
+  color: #fff;
+  /* Texto en color blanco */
+  font-size: 1rem;
+}
+
+.inputs-container input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+  /* Placeholder semitransparente */
+}
+
+.inputs-container input:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.5);
+  /* Borde más visible al enfocar */
+}
+
+/* Botón Enviar */
+.enviar-button {
+  margin-top: 20px;
+  /* Espacio arriba del botón */
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.1);
+  /* Fondo semitransparente */
+  color: #fff;
+  /* Texto en color blanco */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s ease;
+}
+
+.enviar-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  /* Fondo semitransparente al hacer hover */
+}
+
+/* Contenedor de la imagen con zoom */
+.imagen-contenedor {
+  position: relative;
+  overflow: hidden;
+  /* Oculta el desbordamiento de la imagen al hacer zoom */
+  width: 100%;
+  height: 100%;
+  /* Altura del contenedor de la imagen */
+  border-radius: 8px;
+  cursor: pointer;
+  /* Cambiar el cursor al pasar sobre la imagen */
+}
+
+.imagen-capturada {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  /* Ajustar la imagen sin recortar */
+  display: block;
+  transition: transform 0.3s ease;
+  /* Transición suave para el zoom */
+}
+
+/* Estilos para el footer */
+.dashboard-footer {
+  text-align: center;
+  padding: 15px;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+/* Estilos para la modal */
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.modal-contenido {
+  background-color: rgba(255, 255, 255, 0.058);
+  /* Fondo del contenido semi-transparente */
+  padding: 20px;
+  border-radius: 8px;
+  width: 500px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  /* Sombra para mejor visibilidad */
+}
+
+.cerrar-modal {
+  float: right;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: rgb(252, 252, 252);
+  /* Color del botón de cerrar */
+  background-color: red;
+}
+
+.cerrar-modal:hover {
+  color: #000;
+  /* Cambio de color al hacer hover */
+}
+
+.imagen-rechazo {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: rgba(255, 255, 255, 0.8);
+  /* Fondo semi-transparente */
+}
+
+button {
+  padding: 10px 20px;
+  background-color: rgba(255, 255, 255, 0.1);
+  /* Fondo semi-transparente */
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  /* Fondo menos transparente al hacer hover */
+}
