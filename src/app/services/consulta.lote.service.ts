@@ -29,15 +29,15 @@ export class consultaLoteService {
 
   constructor(private http: HttpClient) { }
 
-  getPendingFilesCount(fecha: string): Observable<PendingFilesResponse> {
+  getPendingFilesCount(fecha_incio: string, fecha_fin: string): Observable<PendingFilesResponse> {
     return this.http.get<PendingFilesResponse>(this.apiUrl, {
-      params: { fecha_creacion: fecha }
+      params: { fecha_inicial: fecha_incio, fecha_final: fecha_fin }
     });
   }
 
-  downloadCsv(fecha: string): Observable<Blob> {
+  downloadCsv(fecha_incio: string, fecha_fin: string): Observable<Blob> {
     return this.http.post(this.downloadUrl, null, {
-      params: { fecha_creacion: fecha },
+      params: { fecha_inicial: fecha_incio, fecha_final: fecha_fin },
       responseType: 'blob' // Indicamos que esperamos un blob (archivo)
     });
   }

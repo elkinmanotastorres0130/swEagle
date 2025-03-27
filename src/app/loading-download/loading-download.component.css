@@ -39,14 +39,16 @@
     color: #fff;
 }
 
-/* Estilos para el date picker */
-.date-picker {
+/* Reemplaza los estilos del date-range-picker por estos: */
+.date-range-picker {
     display: flex;
     gap: 10px;
-    margin: 20px 0;
+    margin: 20px 0 30px; /* Más margen inferior */
     align-items: center;
+    flex-wrap: wrap;
 }
 
+/* Asegura que los inputs de fecha tengan el mismo estilo que antes */
 .date-picker input[type="date"] {
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -61,6 +63,13 @@
 .date-picker input[type="date"]::-webkit-calendar-picker-indicator {
     filter: invert(1);
     opacity: 0.8;
+}
+
+/* Estilo para el separador */
+.date-separator {
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0 5px;
+    font-size: 0.9rem;
 }
 
 /* Mensaje de error */
@@ -298,6 +307,12 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    margin-top: 5px; /* Separación adicional */
+}
+
+/* Estilo para el contenedor de botón consultar */
+.search-btn-container {
+    margin-left: auto; /* Empuja el botón a la derecha */
 }
 
 .glassmorphism-btn:hover {

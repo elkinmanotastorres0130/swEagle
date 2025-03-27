@@ -8,12 +8,22 @@ import {
   faUpload,
   faCamera
 } from '@fortawesome/free-solid-svg-icons';
+import { rippleClick } from '../animations'; // Ajusta la ruta según tu estructura
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [FontAwesomeModule], // Importa FontAwesomeModule aquí
-  templateUrl: './dashboard.component.html',
+  template: `
+    <ul>
+      <li 
+        *ngFor="let item of items"
+        [@rippleClick]="item.state"
+        (click)="item.state = 'active'"
+      >{{ item.name }}</li>
+    </ul>
+  `,
+  animations: [rippleClick], // ← Usa la animación aquí
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent {

@@ -1,13 +1,17 @@
 <div class="dashboard-container">
-    <!-- Video de fondo -->
-    <video autoplay muted loop id="bgVideo">
-        <source src="assets/videos/dashboard.mp4" type="video/mp4">
-        Tu navegador no soporta videos HTML5.
-    </video>
+
+    <!-- Contenedor del fondo con degradado -->
+    <div class="bg-gradient"></div>
+
+    <!-- Marca de agua -->
+    <div class="watermark">
+        <span class="watermark-smart">SMART</span>
+        <span class="watermark-mobility">MOBILITY BACKOFFICE</span>
+    </div>
 
     <!-- Header -->
     <header class="dashboard-header">
-        <h1>Smart Mobility Backoffice</h1>
+        <h1>Sistema Inteligente de Captura de Placas</h1>
         <button class="logout-button" (click)="goToLogin()">
             <fa-icon [icon]="iconLogout"></fa-icon> <!-- Ícono de puerta abierta -->
         </button>
@@ -17,9 +21,9 @@
     <main class="dashboard-main">
         <section class="dashboard-section">
             <ul class="dashboard-list">
-                <li (click)="goToVideoView()"><fa-icon [icon]="iconVideo"></fa-icon> Video</li>
-                <li (click)="goToloadingDownload()"><fa-icon [icon]="iconUpload"></fa-icon> Carga/Descarga</li>
-                <li (click)="goToEvidence()"><fa-icon [icon]="iconCamera"></fa-icon> Evidencias</li>
+                <li (click)="goToVideoView()"><fa-icon [icon]="iconVideo"></fa-icon> Captura placa</li>
+                <li (click)="goToloadingDownload()"><fa-icon [icon]="iconUpload"></fa-icon> Consulta Propietario</li>
+                <li (click)="goToEvidence()"><fa-icon [icon]="iconCamera"></fa-icon> Generación de evidencias</li>
             </ul>
         </section>
 

@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { FormatoUnicoService } from '../services/formato-unico.service';
 import { saveAs } from 'file-saver';
 
+
 @Component({
   selector: 'app-evidence.component',
   templateUrl: './evidence.component.html',
@@ -34,11 +35,13 @@ export class EvidenceComponent {
   showResults: boolean = false;
   loading: boolean = false;
   isLoading = false;
+  conteoEvidencias = 0;
+  conteoFormatos = 0;
  
-
   private router = inject(Router);
   private formatoUnicoService = inject(FormatoUnicoService);
 
+  private baseUrlEvidencia = '/services/operacion/imprimirEvidenciaMPE1';
 
   constructor() {
     const today = new Date();
@@ -88,6 +91,77 @@ export class EvidenceComponent {
           console.error('Error al descargar:', error);
           this.isLoading = false;
           // Aquí puedes agregar notificación de error al usuario
+        }
+      });
+  }
+
+  descargarFormatoEvidencia() {
+    
+
+    let origin = window.location.origin;
+    //${origin}/index.php/acuerdosincumplidos/descargarDocumentos/${datos.archivo}/pdf/0;
+    const url = `${origin}${this.baseUrlEvidencia}?fecha_cargue=${this.selectedDate}`;
+    window.location.href = url;
+    // if (!this.selectedDate) {
+    //   console.error('No se ha seleccionado una fecha');
+    //   return;
+    // }
+
+    // this.isLoading = true;
+    
+    // this.formatoUnicoService.descargarFormatoEvidencia(this.selectedDate)
+    //   .subscribe({
+    //     next: (response) => {
+    //       const blob = response.body;
+    //       const contentDisposition = response.headers.get('content-disposition');
+    //       let filename = `formato_evidencia_${this.selectedDate}.pdf`;
+          
+    //       if (contentDisposition) {
+    //         const filenameMatch = contentDisposition.match(/filename="?(.+)"?/);
+    //         if (filenameMatch && filenameMatch[1]) {
+    //           filename = filenameMatch[1];
+    //         }
+    //       }
+
+    //       // Método nativo para descargar
+    //       const downloadUrl = window.URL.createObjectURL(blob);
+    //       const a = document.createElement('a');
+    //       a.href = downloadUrl;
+    //       a.download = filename;
+    //       document.body.appendChild(a);
+    //       a.click();
+    //       window.URL.revokeObjectURL(downloadUrl);
+    //       document.body.removeChild(a);
+          
+    //       this.isLoading = false;
+    //     },
+    //     error: (error) => {
+    //       console.error('Error al descargar:', error);
+    //       this.isLoading = false;
+    //       // Aquí puedes agregar notificación de error al usuario
+    //     }
+    //   });
+  }
+
+  cargarConteo(fecha: string) {
+    this.isLoading = true;
+    this.formatoUnicoService.obtenerCantidadDeComparendos(fecha)
+      .subscribe({
+        next: (response) => {
+          if (response.success) {
+            this.conteoEvidencias = response.total;
+            this.conteoFormatos = response.total; // Asumimos mismo valor para ambos
+          } else {
+            this.conteoEvidencias = 0;
+            this.conteoFormatos = 0;
+          }
+          this.isLoading = false;
+        },
+        error: (error) => {
+          console.error('Error al obtener conteo:', error);
+          this.conteoEvidencias = 0;
+          this.conteoFormatos = 0;
+          this.isLoading = false;
         }
       });
   }

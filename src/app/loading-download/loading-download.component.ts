@@ -29,13 +29,15 @@ export class LoadingDownloadComponent {
   iconUploadSolid = faUploadSolid; // Icono diferente para el área de drop
 
   // Variables del componente
-  selectedDate: string;
   maxDate: string;
   pendingFiles: number = 0;
   showResults: boolean = false;
   loading: boolean = false;
   errorMessage: string | null = null;
   isDragOver = false;
+  startDate: string;  // <-- Nueva propiedad
+  endDate: string;    // <-- Nueva propiedad
+
 
   private router = inject(Router);
   private pendingFilesService = inject(consultaLoteService);
@@ -44,23 +46,29 @@ export class LoadingDownloadComponent {
   constructor() {
     const today = new Date();
     this.maxDate = today.toISOString().split('T')[0];
-    this.selectedDate = this.maxDate;
+    this.startDate = this.maxDate;
+    this.endDate = this.maxDate;
   }
 
   validateDate() {
-    const selected = new Date(this.selectedDate);
     const today = new Date(this.maxDate);
-    if (selected > today) {
-      this.selectedDate = this.maxDate;
-    }
-  }
+    const start = new Date(this.startDate);
+    const end = new Date(this.endDate);
+    
+    // Validar que no sean futuras
+    if (start > today) this.startDate = this.maxDate;
+    if (end > today) this.endDate = this.maxDate;
+    
+    // Validar que startDate <= endDate
+    if (start > end) this.endDate = this.startDate;
+}
 
   getPendingFiles() {
     this.loading = true;
     this.errorMessage = null;
     this.showResults = false;
 
-    this.pendingFilesService.getPendingFilesCount(this.selectedDate)
+    this.pendingFilesService.getPendingFilesCount(this.startDate, this.endDate)
       .subscribe({
         next: (response) => {
           if (response.success) {
@@ -85,7 +93,7 @@ export class LoadingDownloadComponent {
     this.loading = true;
     this.errorMessage = null;
 
-    this.pendingFilesService.downloadCsv(this.selectedDate)
+    this.pendingFilesService.downloadCsv(this.startDate, this.endDate)
       .subscribe({
         next: (blob) => {
           this.handleDownload(blob);
@@ -107,7 +115,7 @@ export class LoadingDownloadComponent {
     a.href = url;
 
     // Nombre del archivo con la fecha seleccionada
-    a.download = `archivos_pendientes_${this.selectedDate}.csv`;
+    a.download = `archivos_pendientes_${this.maxDate}.csv`;
 
     document.body.appendChild(a);
     a.click();
@@ -119,7 +127,7 @@ export class LoadingDownloadComponent {
 
   resetFilters() {
     const today = new Date();
-    this.selectedDate = today.toISOString().split('T')[0]; // Restablece a fecha actual
+    this.maxDate = today.toISOString().split('T')[0]; // Restablece a fecha actual
     this.pendingFiles = 0; // Resetea el contador
     this.showResults = false; // Oculta los resultados
   }

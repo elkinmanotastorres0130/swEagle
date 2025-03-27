@@ -168,6 +168,16 @@
     }
 }
 
+/* Estilos para el contenedor del calendario */
+.date-picker-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
 .custom-date-picker {
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -183,6 +193,7 @@
     cursor: pointer;
     margin: 0 auto;
     display: block;
+    flex: 1;
 
     &:hover {
         border-color: rgba(56, 182, 255, 0.4);
@@ -216,6 +227,78 @@
     .custom-date-picker {
         padding: 12px 15px;
         font-size: 0.9rem;
+    }
+}
+
+/* Estilo específico para el botón de consulta */
+.consult-btn {
+    background: rgba(56, 182, 255, 0.15);
+    border: 1px solid rgba(56, 182, 255, 0.3);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    backdrop-filter: blur(5px);
+    position: relative;
+    overflow: hidden;
+    min-width: 120px;
+    height: 44px; /* Para igualar altura del input date */
+
+    /* Efecto hover */
+    &:hover:not(:disabled) {
+        background: rgba(56, 182, 255, 0.25);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(56, 182, 255, 0.2);
+    }
+
+    /* Efecto active */
+    &:active:not(:disabled) {
+        transform: translateY(0);
+    }
+
+    /* Borde luminoso */
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 8px;
+        padding: 1px;
+        background: linear-gradient(135deg, rgba(56, 182, 255, 0.4), rgba(100, 200, 255, 0.2));
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        pointer-events: none;
+    }
+
+    /* Ícono */
+    fa-icon {
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+    }
+
+    /* Estado deshabilitado */
+    &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+}
+
+/* Ajustes para móviles */
+@media (max-width: 480px) {
+    .consult-btn {
+        width: 100%;
+        padding: 12px;
     }
 }
 
@@ -418,4 +501,25 @@
 /* Aplicar animación al hover */
 .download-btn:hover fa-icon {
     animation: downloadPulse 1.5s infinite;
+}
+
+/* Estilo para botones deshabilitados */
+.glassmorphism-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    
+    &:hover {
+        transform: none !important;
+        box-shadow: none !important;
+    }
+}
+
+/* Mensaje cuando no hay datos */
+.no-data-message {
+    text-align: center;
+    margin-top: 20px;
+    opacity: 0.7;
+    font-size: 0.9rem;
 }

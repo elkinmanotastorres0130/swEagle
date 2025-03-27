@@ -18,9 +18,15 @@
         <!-- Sección del Calendario -->
         <div class="glassmorphism-card calendar-section">
             <h2><fa-icon [icon]="iconCalendar"></fa-icon> Seleccionar Fecha</h2>
-            <input type="date" [(ngModel)]="selectedDate" [max]="maxDate" class="custom-date-picker">
+            <div class="date-picker-container">
+                <input type="date" [(ngModel)]="selectedDate" [max]="maxDate" class="custom-date-picker">
+                <button class="glassmorphism-btn primary consult-btn" (click)="cargarConteo(selectedDate)"
+                    [disabled]="!selectedDate || isLoading"><fa-icon [icon]="iconSearch"></fa-icon> Consultar
+                </button>
+            </div>
         </div>
 
+        <!-- Sección de Descargas -->
         <!-- Sección de Descargas -->
         <div class="glassmorphism-card download-section">
             <h2><fa-icon [icon]="iconDownload"></fa-icon> Descargar</h2>
@@ -28,24 +34,27 @@
             <div class="evidence-grid">
                 <div class="evidence-row">
                     <span class="evidence-label">Evidencias:</span>
-                    <span class="evidence-counter">20</span>
-                    <button class="download-btn glassmorphism-btn accent">
+                    <span class="evidence-counter">{{conteoEvidencias}}</span>
+                    <button class="download-btn glassmorphism-btn accent" [disabled]="conteoEvidencias === 0 || isLoading"
+                        (click)="descargarFormatoEvidencia()">
                         <fa-icon [icon]="iconDownload"></fa-icon>
+                        <span *ngIf="isLoading" class="loading-spinner"></span>
                     </button>
                 </div>
 
                 <div class="evidence-row">
                     <span class="evidence-label">Formato Único:</span>
-                    <span class="evidence-counter">20</span>
-                    <button class="download-btn glassmorphism-btn accent" (click)="descargarFormatoUnico()"
-                        [disabled]="isLoading">
+                    <span class="evidence-counter">{{conteoFormatos}}</span>
+                    <button class="download-btn glassmorphism-btn accent" [disabled]="conteoFormatos === 0 || isLoading"
+                        (click)="descargarFormatoUnico()">
                         <fa-icon [icon]="iconDownload"></fa-icon>
                         <span *ngIf="isLoading" class="loading-spinner"></span>
                     </button>
                 </div>
             </div>
 
-            <button class="download-all-btn">
+            <button class="glassmorphism-btn primary full-width-btn"
+                [disabled]="(conteoEvidencias === 0 && conteoFormatos === 0) || isLoading">
                 <fa-icon [icon]="iconCloudDownload"></fa-icon> Descargar Todo
             </button>
         </div>

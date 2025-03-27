@@ -10,7 +10,7 @@
         <button class="back-button" (click)="goBack()">
             <fa-icon [icon]="iconArrowLeft"></fa-icon>
         </button>
-        <h1 class="right-aligned-title">Cargar/Descargar</h1>
+        <h1 class="right-aligned-title">Consultar propietario</h1>
         <div class="header-spacer"></div>
     </header>
 
@@ -19,15 +19,23 @@
         <!-- Sección de Descarga -->
         <section class="download-section glassmorphism-card">
             <h2><fa-icon [icon]="iconDownload"></fa-icon> Descargar</h2>
-            
-            <!-- Selector de fecha -->
-            <div class="date-picker">
-                <input type="date" [(ngModel)]="selectedDate" [max]="maxDate" (change)="validateDate()">
-                <button class="glassmorphism-btn primary" (click)="getPendingFiles()" [disabled]="loading">
-                    <fa-icon [icon]="iconSearch"></fa-icon> Consultar
-                </button>
+
+            <div class="date-picker"> <!-- Mantenemos la misma clase que antes -->
+                <input type="date" [(ngModel)]="startDate" [max]="maxDate" (change)="validateDate()"
+                    placeholder="Fecha inicial">
+
+                <span class="date-separator">a</span>
+
+                <input type="date" [(ngModel)]="endDate" [max]="maxDate" (change)="validateDate()"
+                    placeholder="Fecha final">
+                <div class="search-btn-container">
+
+                    <button class="glassmorphism-btn primary" (click)="getPendingFiles()" [disabled]="loading">
+                        <fa-icon [icon]="iconSearch"></fa-icon> Consultar
+                    </button>
+                </div>
             </div>
-        
+
             <!-- Resultados -->
             <div class="pending-files" *ngIf="showResults">
                 <span class="counter">{{ pendingFiles }}</span>
@@ -35,9 +43,7 @@
             </div>
 
             <button class="glassmorphism-btn accent" (click)="downloadCsv()" [disabled]="pendingFiles === 0">
-                <fa-icon 
-                    [icon]="loading ? iconSpinner : iconFileDownload" 
-                    [animation]="loading ? 'spin' : undefined">
+                <fa-icon [icon]="loading ? iconSpinner : iconFileDownload" [animation]="loading ? 'spin' : undefined">
                 </fa-icon> Descargar Archivos
             </button>
         </section>
@@ -45,7 +51,7 @@
         <!-- Sección de Carga con Drag and Drop -->
         <section class="upload-section glassmorphism-card">
             <h2><fa-icon [icon]="iconUpload"></fa-icon> Carga</h2>
-            
+
             <!-- Contenedor para el archivo seleccionado -->
             <div class="file-info-container" *ngIf="selectedFile">
                 <div class="file-info">
@@ -55,28 +61,26 @@
                     </button>
                 </div>
             </div>
-            
+
             <!-- Área de Drag and Drop -->
-            <div class="file-upload-wrapper" 
-                 (dragover)="onDragOver($event)" 
-                 (dragleave)="onDragLeave($event)" 
-                 (drop)="onDrop($event)"
-                 [class.drag-over]="isDragOver">
-                 
+            <div class="file-upload-wrapper" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)"
+                (drop)="onDrop($event)" [class.drag-over]="isDragOver">
+
                 <div class="drop-instructions" *ngIf="!selectedFile">
                     <fa-icon [icon]="iconUploadSolid" class="upload-icon"></fa-icon>
                     <p>Arrastra tu archivo CSV aquí o</p>
                 </div>
-                
+
                 <div class="upload-buttons-container">
-                    <input type="file" id="file-upload" (change)="onFileSelected($event)" #fileInput hidden accept=".csv">
+                    <input type="file" id="file-upload" (change)="onFileSelected($event)" #fileInput hidden
+                        accept=".csv">
                     <button class="glassmorphism-btn select-btn" (click)="fileInput.click()">
                         <fa-icon [icon]="iconSearch"></fa-icon> Buscar Archivo...
                     </button>
                     <div class="button-spacer"></div>
-                    <button class="glassmorphism-btn primary upload-btn" (click)="uploadFile()" [disabled]="!selectedFile || loading">
-                        <fa-icon 
-                            [icon]="loading ? iconSpinner : iconCloudUpload" 
+                    <button class="glassmorphism-btn primary upload-btn" (click)="uploadFile()"
+                        [disabled]="!selectedFile || loading">
+                        <fa-icon [icon]="loading ? iconSpinner : iconCloudUpload"
                             [animation]="loading ? 'spin' : undefined">
                         </fa-icon> Subir
                     </button>
