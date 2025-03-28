@@ -2,29 +2,16 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import {FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AuthService } from '../auth.service'; // Importa el servicio AuthService
-import {
-  faDoorOpen,
-  faVideoCamera,
-  faUpload,
-  faCamera
-} from '@fortawesome/free-solid-svg-icons';
-import { rippleClick } from '../animations'; // Ajusta la ruta según tu estructura
+import {faDoorOpen,faVideoCamera,faUpload,faCamera} from '@fortawesome/free-solid-svg-icons';
+import { fadeAnimation } from '../animations'; // Ajusta la ruta según tu estructura
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [FontAwesomeModule], // Importa FontAwesomeModule aquí
-  template: `
-    <ul>
-      <li 
-        *ngFor="let item of items"
-        [@rippleClick]="item.state"
-        (click)="item.state = 'active'"
-      >{{ item.name }}</li>
-    </ul>
-  `,
-  animations: [rippleClick], // ← Usa la animación aquí
-  styleUrls: ['./dashboard.component.css']
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.css'],
+  animations: [fadeAnimation] // Añade la animación aquí
 })
 export class DashboardComponent {
   constructor(

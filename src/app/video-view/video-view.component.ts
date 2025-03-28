@@ -6,13 +6,10 @@ import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontaweso
 import { VideosService } from '../services/videos.service'; // Importa el servicio de videos
 import { OperacionService } from '../services/operacion.service'; // Importa de las infracciones
 import { CausalesService } from '../services/causales.service'; // Importar servicio de causales de rechazo
-import { 
-  faArrowLeft, 
-  faTimes, 
-  faCamera, 
-  faBan // Icono para "cancelar" (puedes usar faTimesCircle si prefieres)
-} from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2';
+import { fadeAnimation } from '../animations'; // Ajusta la ruta según tu estructura
+
 
 // Definir la interfaz para la respuesta del servicio
 export interface VideoResponse {
@@ -34,7 +31,8 @@ export interface Video {
   standalone: true, // Asegúrate de que sea standalone
   imports: [FormsModule, CommonModule, FontAwesomeModule],
   templateUrl: './video-view.component.html',
-  styleUrls: ['./video-view.component.css']
+  styleUrls: ['./video-view.component.css'],
+  animations: [fadeAnimation] // Añade la animación aquí
 })
 export class VideoViewComponent {
   @ViewChild('videoElement') videoElement!: ElementRef<HTMLVideoElement>; // Referencia al elemento de video
@@ -44,9 +42,6 @@ export class VideoViewComponent {
   zoomActivo: boolean = false; // Estado del zoom
   estilosZoom: any = {}; // Estilos dinámicos para el zoom
   faArrowLeft = faArrowLeft; // Define el ícono
-  iconTimes = faTimes;       // Icono X para eliminar
-  iconCamera = faCamera;     // Icono de cámara
-  iconCancel = faBan;        // Icono de cancelar (puedes cambiarlo por faTimesCircle si prefieres)
   videoUrl: string = ''; // URL del video a reproducir
   totalVideos: number = 0; // Total de videos
   videos: any[] = []; // Lista de videos
@@ -54,6 +49,8 @@ export class VideoViewComponent {
   captura1: string | null = null; // URL de la primera captura
   captura2: string | null = null; // URL de la segunda captura
   currentVideoIndex: number = 0; // Índice del video actual en el array (siempre será 0)
+  enviandoDatos = false;
+  iconSpinner = faSpinner;
 
   // Variables para la modal de rechazo
   modalRechazarAbierta: boolean = false;
@@ -184,15 +181,19 @@ export class VideoViewComponent {
 
   // Método para manejar el envío de datos
   enviarDatos() {
+    this.enviandoDatos = true; // Activar spinner
+    
     // Validar los campos
     const validacion = this.validarCampos();
 
     if (!validacion.valido) {
+      this.enviandoDatos = false; // Desactivar spinner
       Swal.fire('Error', validacion.mensaje, 'error');
       return;
     }
 
     if (!this.placa || !this.direccion || !this.captura1 || !this.captura2) {
+      this.enviandoDatos = false; // Desactivar spinner
       Swal.fire('Error', 'Por favor, complete todos los campos y capture ambas imágenes.', 'error');
       return;
     }
@@ -209,15 +210,16 @@ export class VideoViewComponent {
           // Incrementar el índice del video y guardarlo en el localStorage
           this.videoIndex++;
           localStorage.setItem('videoIndex', this.videoIndex.toString());
-
-          Swal.fire('Éxito', response.msg, 'success');
+          this.enviandoDatos = false; // Desactivar spinner
           this.recargarDatos();
         } else {
+          this.enviandoDatos = false; // Desactivar spinner
           Swal.fire('Error', response.msg || 'Hubo un problema al enviar los datos.', 'error');
           this.recargarDatos();
         }
       },
       error: (error) => {
+        this.enviandoDatos = false; // Desactivar spinner
         console.error('Error al enviar los datos:', error);
         Swal.fire('Error', 'Hubo un problema al enviar los datos.', 'error');
       }

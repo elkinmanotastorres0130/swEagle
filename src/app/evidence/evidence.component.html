@@ -1,15 +1,20 @@
-<div class="minimal-dashboard-container no-scroll">
-    <!-- Video de fondo -->
-    <video autoplay muted loop id="bgVideo">
-        <source src="assets/videos/dashboard.mp4" type="video/mp4">
-    </video>
+<div class="minimal-dashboard-container no-scroll" [@fadeAnimation]>
+
+    <!-- Contenedor del fondo con degradado -->
+    <div class="bg-gradient"></div>
+
+    <!-- Marca de agua -->
+    <div class="watermark">
+        <span class="watermark-smart">SMART</span>
+        <span class="watermark-mobility">MOBILITY BACKOFFICE</span>
+    </div>
 
     <!-- Header -->
     <header class="minimal-header">
         <button class="back-button" (click)="goBack()">
             <fa-icon [icon]="iconArrowLeft"></fa-icon>
         </button>
-        <h1 class="right-aligned-title">Evidencias</h1>
+        <h1 class="right-aligned-title">Generación de evidencias</h1>
         <div class="header-spacer"></div>
     </header>
 
@@ -27,36 +32,58 @@
         </div>
 
         <!-- Sección de Descargas -->
-        <!-- Sección de Descargas -->
         <div class="glassmorphism-card download-section">
             <h2><fa-icon [icon]="iconDownload"></fa-icon> Descargar</h2>
-
+        
             <div class="evidence-grid">
+                <!-- Evidencias -->
                 <div class="evidence-row">
                     <span class="evidence-label">Evidencias:</span>
                     <span class="evidence-counter">{{conteoEvidencias}}</span>
-                    <button class="download-btn glassmorphism-btn accent" [disabled]="conteoEvidencias === 0 || isLoading"
-                        (click)="descargarFormatoEvidencia()">
-                        <fa-icon [icon]="iconDownload"></fa-icon>
-                        <span *ngIf="isLoading" class="loading-spinner"></span>
+                    <button class="download-btn glassmorphism-btn accent"
+                            [disabled]="conteoEvidencias === 0 || loadingEvidence"
+                            (click)="descargarFormatoEvidencia()">
+                        <fa-icon [icon]="loadingEvidence ? iconSpinner : iconDownload" 
+                                [animation]="loadingEvidence ? 'spin' : undefined"></fa-icon>
                     </button>
                 </div>
-
+        
+                <!-- Formato Único -->
                 <div class="evidence-row">
                     <span class="evidence-label">Formato Único:</span>
                     <span class="evidence-counter">{{conteoFormatos}}</span>
-                    <button class="download-btn glassmorphism-btn accent" [disabled]="conteoFormatos === 0 || isLoading"
-                        (click)="descargarFormatoUnico()">
-                        <fa-icon [icon]="iconDownload"></fa-icon>
-                        <span *ngIf="isLoading" class="loading-spinner"></span>
+                    <button class="download-btn glassmorphism-btn accent" 
+                            [disabled]="conteoFormatos === 0 || loadingFormat"
+                            (click)="descargarFormatoUnico()">
+                        <fa-icon [icon]="loadingFormat ? iconSpinner : iconDownload" 
+                                [animation]="loadingFormat ? 'spin' : undefined"></fa-icon>
+                    </button>
+                </div>
+        
+                <!-- Formato Mensajería -->
+                <div class="evidence-row">
+                    <span class="evidence-label">Formato Mensajería:</span>
+                    <span class="evidence-counter">{{conteoFormatos}}</span>
+                    <button class="download-btn glassmorphism-btn accent"
+                            [disabled]="conteoFormatos === 0 || loadingMensajeria"
+                            (click)="descargarFormatoMensajeria()">
+                        <fa-icon [icon]="loadingMensajeria ? iconSpinner : iconDownload" 
+                                [animation]="loadingMensajeria ? 'spin' : undefined"></fa-icon>
+                    </button>
+                </div>
+        
+                <!-- Formato SIMIT -->
+                <div class="evidence-row">
+                    <span class="evidence-label">Formato SIMIT:</span>
+                    <span class="evidence-counter">{{conteoFormatos}}</span>
+                    <button class="download-btn glassmorphism-btn accent"
+                            [disabled]="conteoFormatos === 0 || loadingSIMIT"
+                            (click)="descargarFormatoSIMIT()">
+                        <fa-icon [icon]="loadingSIMIT ? iconSpinner : iconDownload" 
+                                [animation]="loadingSIMIT ? 'spin' : undefined"></fa-icon>
                     </button>
                 </div>
             </div>
-
-            <button class="glassmorphism-btn primary full-width-btn"
-                [disabled]="(conteoEvidencias === 0 && conteoFormatos === 0) || isLoading">
-                <fa-icon [icon]="iconCloudDownload"></fa-icon> Descargar Todo
-            </button>
         </div>
     </main>
 

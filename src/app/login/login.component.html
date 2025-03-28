@@ -1,20 +1,23 @@
-<div class="login-container">
-  <!-- Video de fondo -->
-  <video autoplay muted loop id="bgVideo">
-      <source src="assets/videos/dashboard.mp4" type="video/mp4">
-      Tu navegador no soporta videos HTML5.
-  </video>
+<div class="login-container" [@fadeAnimation]>
+  <!-- Fondo con degradado (reemplazando el video) -->
+  <div class="bg-gradient"></div>
 
-  <div class="login-box">
-      <h2>Acceder</h2>
-      <form (ngSubmit)="onSubmit()">
-          <div class="form-group">
-              <input type="text" placeholder="usuario" id="usuario" [(ngModel)]="usuario" name="usuario" required>
-          </div>
-          <div class="form-group">
-              <input type="password" placeholder="contraseña" id="contrasena" [(ngModel)]="contrasena" name="contrasena" required>
-          </div>
-          <button type="submit">Ingresar</button>
-      </form>
+  <!-- Marca de agua consistente -->
+  <div class="watermark">
+    <span class="watermark-smart">SMART</span>
+    <span class="watermark-mobility">MOBILITY BACKOFFICE</span>
+  </div>
+
+  <div class="login-box glassmorphism-card">
+    <h2>Acceder al Sistema</h2>
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <input type="text" placeholder="Usuario" [(ngModel)]="usuario" name="usuario" required>
+      </div>
+      <div class="form-group">
+        <input type="password" placeholder="Contraseña" [(ngModel)]="contrasena" name="contrasena" required>
+      </div>
+      <button type="submit" class="glassmorphism-btn primary">Ingresar</button>
+    </form>
   </div>
 </div>

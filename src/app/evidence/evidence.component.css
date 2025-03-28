@@ -1,123 +1,204 @@
-/* Estilos base minimalistas pero futuristas */
+/* Importación de fuentes (añade esto al inicio) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Open+Sans:wght@300;400;600;700&display=swap');
+
+/* === Estilos base con tipografía === */
 .minimal-dashboard-container {
-    display: flex; /* Añadido */
-    flex-direction: column; /* Añadido */
+    display: flex;
+    flex-direction: column;
     position: relative;
     min-height: 100vh;
-    color: #fff;
-    overflow: hidden;
+    color: #333;
+    font-family: 'Open Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    background: rgba(255, 255, 255, 0.15);
 }
 
-#bgVideo {
+/* === Fondo con degradado === */
+.bg-gradient {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    background: linear-gradient(
+      135deg,
+      rgba(176, 196, 222, 0.9) 0%,
+      rgba(169, 169, 179, 0.95) 100%
+    );
     z-index: -1;
-    filter: brightness(0.6);
 }
 
-/* Header minimalista */
+/* === Marca de agua === */
+.watermark {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    pointer-events: none;
+    user-select: none;
+    text-align: center;
+    white-space: nowrap;
+    opacity: 0.55;
+    overflow: hidden;
+}
+
+.watermark::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.2) 15%,
+      rgba(255, 255, 255, 0.25) 25%,
+      rgba(255, 255, 255, 0) 50%
+    );
+    animation: shine 6s infinite ease-in-out;
+    transform: rotate(-30deg);
+}
+
+@keyframes shine {
+    0% { transform: translateX(-100%) rotate(-30deg); }
+    100% { transform: translateX(100%) rotate(-30deg); }
+}
+
+.watermark-smart {
+    position: relative;
+    font-size: 120px;
+    font-weight: 900;
+    color: rgba(15, 23, 42, 0.15);
+    display: block;
+    line-height: 0.9;
+    letter-spacing: 2px;
+    font-family: 'Inter', sans-serif;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.watermark-mobility {
+    position: relative;
+    font-size: 60px;
+    font-weight: 600;
+    color: rgba(15, 23, 42, 0.1);
+    display: block;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    margin-top: -10px;
+    font-family: 'Open Sans', sans-serif;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+}
+
+/* === Header === */
 .minimal-header {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    padding: 15px 25px;
-    background: rgba(15, 23, 42, 0.7);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    position: relative;
-    flex-shrink: 0;
+    align-items: center;
+    padding: 20px;
+    background: rgba(176, 196, 222, 0.85);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .minimal-header h1 {
     margin: 0 auto;
-    font-size: 1.5rem;
-    font-weight: 300;
+    font-size: 2rem;
+    font-weight: 600;
     letter-spacing: 1px;
-    text-align: right;
-    color: #fff;
+    font-family: 'Inter', sans-serif;
+    color: #2d3748;
 }
 
-.back-button {
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    width: 36px;
-    height: 36px;
+/* === Botones circulares === */
+.back-button, .download-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
     border-radius: 50%;
-    color: white;
-    cursor: pointer;
+    width: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
+    color: #2d3748;
+    cursor: pointer;
     transition: all 0.3s;
-    z-index: 2;
+    font-family: 'Open Sans', sans-serif;
 }
 
-.back-button:hover {
-    background: rgba(255, 255, 255, 0.1);
-    transform: translateX(-3px);
+.back-button:hover, .download-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
 }
 
-/* Contenido principal centrado */
+/* === Contenido principal === */
 .minimal-main-content {
+    flex: 1;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 20px;
-    flex: 1;
-    margin-bottom: auto; /* Asegura espacio para el footer */
 }
 
-/* Tarjeta de descargas */
+/* === Sección de descargas === */
 .download-section {
     width: 100%;
     max-width: 500px;
-    padding: 30px;
+    background: rgba(255, 255, 255, 0.25);
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    margin-bottom: 20px;
     text-align: center;
-    
-    h2 {
-        margin-top: 0;
-        margin-bottom: 25px;
-        font-weight: 300;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-    }
+    backdrop-filter: blur(5px);
 }
 
-/* Grid de evidencias */
+.download-section h2 {
+    margin-top: 0;
+    margin-bottom: 25px;
+    font-weight: 300;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* === Grid de evidencias === */
 .evidence-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin: 25px 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    width: 100%;
 }
 
-/* Filas de evidencia */
 .evidence-row {
-    display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 15px 20px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
     transition: all 0.3s ease;
+    cursor: pointer;
+    display: grid;
+    grid-template-columns: 150px 50px auto;
+    align-items: center;
+    gap: 1rem;
+}
 
-    &:hover {
-        background: rgba(255, 255, 255, 0.08);
-        transform: translateY(-2px);
-    }
+.evidence-row:hover {
+    background: rgba(255, 255, 255, 0.35);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
 }
 
 .evidence-label {
-    font-size: 1rem;
-    opacity: 0.9;
+    font-weight: 500;
+    text-align: right;
+    text-align: center;
+    font-weight: bold;
+    min-width: 30px;
 }
 
 .evidence-counter {
@@ -127,137 +208,151 @@
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    min-width: 40px;
+}
+
+/* === Sección del calendario === */
+.calendar-section {
+    width: 100%;
+    max-width: 500px;
+    margin-bottom: 30px;
     text-align: center;
 }
 
-/* Botones */
-.download-btn {
-    width: 40px;
-    height: 40px;
-    padding: 0;
+.calendar-section h2 {
+    margin-bottom: 20px;
+    font-weight: 300;
+    font-size: 1.3rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
+    gap: 10px;
 }
 
-.full-width-btn {
-    width: 100%;
-    padding: 12px;
-    margin-top: 10px;
-    
-    fa-icon {
-        margin-right: 8px;
-    }
-}
-
-/* Estilos para la sección del calendario */
-.calendar-section {
-    margin-bottom: 30px;
-    text-align: center;
-    width: 100%;
-    max-width: 500px;
-    
-    h2 {
-        margin-bottom: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-    }
-}
-
-/* Estilos para el contenedor del calendario */
 .date-picker-container {
     display: flex;
+    gap: 10px;
     align-items: center;
-    gap: 15px;
-    width: 100%;
-    max-width: 500px;
-    margin: 0 auto;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 .custom-date-picker {
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.25);
     border: 1px solid rgba(255, 255, 255, 0.2);
-    color: white;
+    color: #2d3748;
     padding: 12px 20px;
     border-radius: 8px;
     font-family: inherit;
-    width: 100%;
+    flex: 1;
     max-width: 250px;
     text-align: center;
-    backdrop-filter: blur(5px);
     transition: all 0.3s;
     cursor: pointer;
-    margin: 0 auto;
-    display: block;
-    flex: 1;
-
-    &:hover {
-        border-color: rgba(56, 182, 255, 0.4);
-    }
-
-    &:focus {
-        outline: none;
-        border-color: #38b6ff;
-        box-shadow: 0 0 0 2px rgba(56, 182, 255, 0.2);
-    }
-
-    /* Estilo para el icono del calendario */
-    &::-webkit-calendar-picker-indicator {
-        filter: invert(1);
-        opacity: 0.7;
-        cursor: pointer;
-    }
-
-    /* Estilo para la fecha */
-    &::-webkit-datetime-edit {
-        color: white;
-    }
-
-    &::-webkit-datetime-edit-fields-wrapper {
-        color: white;
-    }
 }
 
-/* Ajustes para dispositivos móviles */
-@media (max-width: 600px) {
-    .custom-date-picker {
-        padding: 12px 15px;
-        font-size: 0.9rem;
-    }
+.custom-date-picker:hover {
+    border-color: rgba(56, 182, 255, 0.4);
 }
 
-/* Estilo específico para el botón de consulta */
-.consult-btn {
+.custom-date-picker::-webkit-calendar-picker-indicator {
+    filter: invert(0.5);
+}
+
+/* === Botones principales === */
+.consult-btn, .download-all-btn {
     background: rgba(56, 182, 255, 0.15);
     border: 1px solid rgba(56, 182, 255, 0.3);
-    color: white;
+    color: #2d3748;
     padding: 12px 20px;
     border-radius: 8px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 0.95rem;
-    display: flex;
+    transition: all 0.3s;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    backdrop-filter: blur(5px);
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.consult-btn:hover, .download-all-btn:hover {
+    background: rgba(56, 182, 255, 0.25);
+    transform: translateY(-2px);
+}
+
+.download-all-btn {
+    width: 100%;
+    margin-top: 30px;
+    padding: 14px;
+}
+
+/* === Footer === */
+.minimal-footer {
+    text-align: center;
+    padding: 15px;
+    background: rgba(176, 196, 222, 0.85);
+    font-size: 0.9rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+    .watermark-smart { font-size: 80px; }
+    .watermark-mobility { font-size: 40px; }
+    
+    .date-picker-container {
+        flex-direction: column;
+    }
+    
+    .custom-date-picker {
+        max-width: 100%;
+    }
+    
+    .evidence-label {
+        font-size: 0.9rem;
+    }
+    
+    .evidence-counter {
+        font-size: 1.2rem;
+    }
+}
+
+/* Estilo mejorado para el botón Descargar Todo */
+.glassmorphism-btn.primary.full-width-btn {
+    background: rgba(56, 182, 255, 0.25);
+    border: 1px solid rgba(56, 182, 255, 0.4);
+    color: #020202;
+    padding: 14px 20px;
+    border-radius: 10px;
+    margin-top: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    backdrop-filter: blur(8px);
     position: relative;
     overflow: hidden;
-    min-width: 120px;
-    height: 44px; /* Para igualar altura del input date */
-
-    /* Efecto hover */
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 15px rgba(56, 182, 255, 0.2),
+                inset 0 1px 1px rgba(255,255,255,0.2);
+    
+    /* Efecto de iluminación al pasar el mouse */
     &:hover:not(:disabled) {
-        background: rgba(56, 182, 255, 0.25);
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(56, 182, 255, 0.2);
+        background: rgba(56, 182, 255, 0.35);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(56, 182, 255, 0.3),
+                    inset 0 1px 1px rgba(255,255,255,0.3);
     }
 
-    /* Efecto active */
+    /* Efecto de click */
     &:active:not(:disabled) {
         transform: translateY(0);
     }
@@ -270,188 +365,15 @@
         left: 0;
         right: 0;
         bottom: 0;
-        border-radius: 8px;
+        border-radius: 10px;
         padding: 1px;
-        background: linear-gradient(135deg, rgba(56, 182, 255, 0.4), rgba(100, 200, 255, 0.2));
-        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-        -webkit-mask-composite: xor;
-        mask-composite: exclude;
-        pointer-events: none;
-    }
-
-    /* Ícono */
-    fa-icon {
-        font-size: 0.9rem;
-        transition: all 0.3s ease;
-    }
-
-    /* Estado deshabilitado */
-    &:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-        background: rgba(255, 255, 255, 0.05);
-        border-color: rgba(255, 255, 255, 0.1);
-    }
-}
-
-/* Ajustes para móviles */
-@media (max-width: 480px) {
-    .consult-btn {
-        width: 100%;
-        padding: 12px;
-    }
-}
-
-/* Footer minimalista */
-.minimal-footer {
-    text-align: center;
-    padding: 15px;
-    background: rgba(15, 23, 42, 0.7);
-    backdrop-filter: blur(10px);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    font-size: 0.8rem;
-    opacity: 0.7;
-    flex-shrink: 0;
-    position: relative; /* Cambiado de absolute/fixed a relative */
-    margin-top: auto; /* Fuerza al footer a quedarse abajo */
-}
-
-/* Efectos de borde luminoso */
-.glassmorphism-card::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border-radius: 1px;
-    padding: 1px;
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
-}
-
-/* Estilo mejorado para el botón Descargar Todo */
-.download-all-btn {
-    background: rgba(56, 182, 255, 0.15);
-    border: 1px solid rgba(56, 182, 255, 0.3);
-    color: white;
-    padding: 14px 20px;
-    border-radius: 8px;
-    margin-top: 30px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 1rem;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    backdrop-filter: blur(5px);
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-
-    /* Efecto de iluminación al pasar el mouse */
-    &:hover {
-        background: rgba(56, 182, 255, 0.25);
-        transform: translateY(-2px);
-        box-shadow: 0 4px 15px rgba(56, 182, 255, 0.2);
-    }
-
-    /* Efecto de click */
-    &:active {
-        transform: translateY(0);
-    }
-
-    /* Borde luminoso */
-    &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        border-radius: 8px;
-        padding: 1px;
-        background: linear-gradient(135deg, rgba(56, 182, 255, 0.4), rgba(100, 200, 255, 0.2));
-        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-        -webkit-mask-composite: xor;
-        mask-composite: exclude;
-        pointer-events: none;
-        z-index: -1;
-    }
-
-    /* Efecto de pulso en el ícono */
-    fa-icon {
-        transition: transform 0.3s ease;
-    }
-
-    &:hover fa-icon {
-        animation: pulse 1.5s infinite;
-    }
-}
-
-/* Animación de pulso */
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.1);
-    }
-    100% {
-        transform: scale(1);
-    }
-}
-
-/* Estilo base para botones de descarga individual */
-.download-btn {
-    background: rgba(132, 94, 247, 0.15);
-    border: 1px solid rgba(132, 94, 247, 0.3);
-    color: white;
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-    backdrop-filter: blur(5px);
-
-    /* Efecto hover */
-    &:hover {
-        background: rgba(132, 94, 247, 0.25);
-        transform: translateY(-3px) scale(1.05);
-        box-shadow: 0 4px 12px rgba(132, 94, 247, 0.2);
-        
-        fa-icon {
-            transform: scale(1.1);
-            color: #fff;
-        }
-    }
-
-    /* Efecto active */
-    &:active {
-        transform: translateY(0) scale(0.98);
-    }
-
-    /* Borde luminoso */
-    &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        border-radius: 50%;
-        padding: 1px;
-        background: linear-gradient(135deg, rgba(132, 94, 247, 0.4), rgba(160, 120, 255, 0.2));
-        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        background: linear-gradient(135deg, 
+                      rgba(255,255,255,0.4) 0%, 
+                      rgba(255,255,255,0.1) 50%,
+                      rgba(255,255,255,0.4) 100%);
+        -webkit-mask: 
+            linear-gradient(#fff 0 0) content-box, 
+            linear-gradient(#fff 0 0);
         -webkit-mask-composite: xor;
         mask-composite: exclude;
         pointer-events: none;
@@ -460,63 +382,33 @@
     /* Ícono */
     fa-icon {
         font-size: 1.1rem;
-        color: rgba(255, 255, 255, 0.9);
         transition: all 0.3s ease;
     }
 
-    /* Efecto de onda al hacer click */
-    &::after {
-        content: '';
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 70%);
-        opacity: 0;
-        border-radius: 50%;
-        transform: scale(0);
-        transition: transform 0.5s, opacity 0.5s;
+    /* Efecto de pulso en el ícono */
+    &:hover:not(:disabled) fa-icon {
+        animation: pulse 1.5s infinite;
     }
 
-    &:active::after {
-        opacity: 1;
-        transform: scale(2);
-    }
-}
-
-/* Animación de pulsación para el ícono */
-@keyframes downloadPulse {
-    0% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-3px);
-    }
-    100% {
-        transform: translateY(0);
-    }
-}
-
-/* Aplicar animación al hover */
-.download-btn:hover fa-icon {
-    animation: downloadPulse 1.5s infinite;
-}
-
-/* Estilo para botones deshabilitados */
-.glassmorphism-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    background: rgba(255, 255, 255, 0.05) !important;
-    border-color: rgba(255, 255, 255, 0.1) !important;
-    
-    &:hover {
+    /* Estado deshabilitado */
+    &:disabled {
+        opacity: 0.6;
+        background: rgba(255,255,255,0.1) !important;
+        border-color: rgba(255,255,255,0.2) !important;
+        color: rgba(255,255,255,0.6) !important;
+        cursor: not-allowed;
         transform: none !important;
         box-shadow: none !important;
     }
 }
 
-/* Mensaje cuando no hay datos */
+/* Animación de pulso para el ícono */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+}
+
 .no-data-message {
     text-align: center;
     margin-top: 20px;

@@ -1,9 +1,13 @@
-<div class="minimal-dashboard-container no-scroll">
-    <!-- Video de fondo -->
-    <video autoplay muted loop id="bgVideo">
-        <source src="assets/videos/dashboard.mp4" type="video/mp4">
-        Tu navegador no soporta videos HTML5.
-    </video>
+<div class="minimal-dashboard-container no-scroll"  [@fadeAnimation]>
+   
+    <!-- Contenedor del fondo con degradado -->
+    <div class="bg-gradient"></div>
+
+     <!-- Marca de agua -->
+     <div class="watermark">
+        <span class="watermark-smart">SMART</span>
+        <span class="watermark-mobility">MOBILITY BACKOFFICE</span>
+    </div>
 
     <!-- Header minimalista -->
     <header class="minimal-header">

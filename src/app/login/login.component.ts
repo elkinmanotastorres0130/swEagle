@@ -4,13 +4,15 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../auth.service'; // Importa el servicio
 import { CommonModule } from '@angular/common';
 import { provideHttpClient } from '@angular/common/http';
+import { fadeAnimation } from '../animations'; // Asegúrate de que la ruta sea correcta
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [FormsModule, CommonModule],
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
+  animations: [fadeAnimation] // Añade la animación aquí
 })
 export class LoginComponent {
   usuario: string = '';

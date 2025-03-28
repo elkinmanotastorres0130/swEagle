@@ -26,6 +26,7 @@ export class consultaLoteService {
   private apiUrl = '/services/operacion/listarMPE1Count'; // Usa la ruta del proxy
   private downloadUrl = '/services/operacion/descargarCsvMPE1';
   private uploadUrl = '/services/operacion/cargarCsvMPE1'; // Nueva URL para carga
+  private downloadErrorUrl = '/services/operacion/csvErroresCargueMPE1';
 
   constructor(private http: HttpClient) { }
 
@@ -46,6 +47,13 @@ export class consultaLoteService {
     const formData = new FormData();
     formData.append('plano_csv', file, file.name);
     return this.http.post<UploadCsvResponse>(this.uploadUrl, formData);
+  }
+
+  downloadErrorsCsv(): Observable<any> {
+    const url = this.downloadErrorUrl;
+    return this.http.get(url, {
+      responseType: 'blob'
+    });
   }
 
   // Método helper para mostrar errores con SweetAlert

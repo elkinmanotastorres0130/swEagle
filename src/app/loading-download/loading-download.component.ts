@@ -6,6 +6,8 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { consultaLoteService } from '../services/consulta.lote.service';
 import Swal from 'sweetalert2';
+import { fadeAnimation } from '../animations'; // Ajusta la ruta según tu estructura
+
 
 @Component({
   selector: 'app-loading-download',
@@ -13,6 +15,8 @@ import Swal from 'sweetalert2';
   styleUrls: ['./loading-download.component.css'],
   imports: [FontAwesomeModule, CommonModule, FormsModule],
   standalone: true,
+  animations: [fadeAnimation] // Añade la animación aquí
+
 })
 export class LoadingDownloadComponent {
   selectedFile: File | null = null;
@@ -155,10 +159,7 @@ export class LoadingDownloadComponent {
       Swal.fire({
         title: 'Error',
         text: 'Por favor selecciona un archivo primero',
-        icon: 'warning',
-        background: 'rgba(15, 23, 42, 0.9)',
-        backdrop: 'rgba(0, 0, 0, 0.7)',
-        confirmButtonColor: '#38b6ff'
+        icon: 'warning'
       });
       return;
     }
@@ -170,41 +171,59 @@ export class LoadingDownloadComponent {
         this.loading = false;
         
         if (response.success) {
+          // Caso exitoso
           Swal.fire({
             title: '¡Éxito!',
-            text: `${this.selectedFile?.name} se cargó correctamente`,
+            text: `El archivo ${this.selectedFile?.name} se cargó correctamente`,
             icon: 'success',
-            background: ' #f8f9fa;',
-            backdrop: ' #f8f9fa;',
-            confirmButtonColor: '#38b6ff'
+            confirmButtonText: 'Aceptar'
           });
           this.clearFile();
         } else {
-          if (response.data && response.data.length > 0) {
-            this.showErrorTable(response.msg, response.data);
-          } else {
-            Swal.fire({
-              title: 'Error',
-              text: response.msg || 'Error al cargar el archivo',
-              icon: 'error',
-              background: ' #f8f9fa;',
-              backdrop: ' #f8f9fa;',
-              confirmButtonColor: '#38b6ff'
-            });
-          }
+          // Caso con errores
+          Swal.fire({
+            title: 'Error en la carga',
+            text: response.msg,
+            icon: 'error',
+            confirmButtonText: 'Entendido',
+            didClose: () => {
+              // Descargar CSV de errores después de cerrar la alerta
+              this.downloadErrorCsv();
+            }
+          });
         }
       },
-      error: (err) => {
+      error: (error) => {
         this.loading = false;
         Swal.fire({
           title: 'Error',
-          text: 'Error al conectar con el servidor',
+          text: 'Ocurrió un problema al conectar con el servidor',
           icon: 'error',
-          background: ' #f8f9fa;',
-          backdrop: ' #f8f9fa;',
-          confirmButtonColor: '#38b6ff'
+          confirmButtonText: 'Aceptar'
         });
-        console.error('Error:', err);
+      }
+    });
+  }
+
+  private downloadErrorCsv() {
+    this.pendingFilesService.downloadErrorsCsv().subscribe({
+      next: (blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `errores_carga_${new Date().toISOString().split('T')[0]}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      },
+      error: (error) => {
+        console.error('Error al descargar CSV de errores:', error);
+        Swal.fire({
+          title: 'Error',
+          text: 'No se pudo descargar el reporte de errores',
+          icon: 'warning'
+        });
       }
     });
   }

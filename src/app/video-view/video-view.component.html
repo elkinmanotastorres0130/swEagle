@@ -1,90 +1,102 @@
-<div class="video-view-container">
-    <!-- Video de fondo -->
-    <video autoplay muted loop id="bgVideo">
-        <source src="assets/videos/dashboard.mp4" type="video/mp4">
-        Tu navegador no soporta videos HTML5.
-    </video>
+<div class="video-view-container" [@fadeAnimation]>
+    <!-- Contenedor del fondo con degradado -->
+    <div class="bg-gradient"></div>
 
     <!-- Header -->
     <header class="dashboard-header">
         <button class="logout-button" (click)="goBack()">
-            <fa-icon [icon]="faArrowLeft"></fa-icon> <!-- Ícono de flecha hacia atrás -->
+            <fa-icon [icon]="faArrowLeft"></fa-icon>
         </button>
-        <div class="contador-videos">
-            <p>{{ videoIndex + 1 }} / {{ getTotalVideos() }}</p>
-        </div>
-        <h1>Video</h1>
+        <h1>Captura placa</h1>
     </header>
 
-    <!-- Contenedor del video y los botones -->
-    <main class="video-section">
-        <!-- Video -->
-        <div class="video-container">
-              
-            <video #videoElement controls autoplay (loadeddata)="onVideoLoaded()" (error)="onVideoError()">
-                <source [src]="videoUrl" type="video/mp4">
-                Tu navegador no soporta la reproducción de video.
-            </video>
+    <!-- Contenido principal - Diseño de dos columnas -->
+    <main class="video-main-container">
+        <!-- Columna izquierda - Video -->
+        <div class="video-column">
+            <div class="contador-videos">
+                <p>{{ videoIndex + 1 }} / {{ getTotalVideos() }}</p>
+            </div>
+            <div class="video-wrapper">
+                <video #videoElement controls autoplay (loadeddata)="onVideoLoaded()" (error)="onVideoError()">
+                    <source [src]="videoUrl" type="video/mp4">
+                </video>
+            </div>
         </div>
 
-        <!-- Contenedor para las capturas -->
-        <div class="capturas-container">
-            <!-- Captura 1 -->
-            <div class="captura" *ngIf="captura1">
-                <img [src]="captura1" alt="Captura de video">
-                <button class="eliminar-captura" (click)="eliminarCaptura(1)">X</button>
-            </div>
+        <!-- Columna derecha - Controles -->
+        <div class="controls-column">
+            <!-- Sección de capturas -->
+            <div class="captures-section">
+                <h3 class="captures-title">CAPTURAS</h3>
 
-            <!-- Captura 2 -->
-            <div class="captura" *ngIf="captura2">
-                <img [src]="captura2" alt="Captura de video">
-                <button class="eliminar-captura" (click)="eliminarCaptura(2)">X</button>
-            </div>
-
-            <!-- Contenedor para los inputs y el botón de enviar -->
-            <div class="inputs-container" *ngIf="captura1">
-                <!-- Campos de entrada para placa y dirección -->
-                <div class="input-container">
-                    <div class="input-group">
-                        <input id="placa" [(ngModel)]="placa" placeholder="Ingrese la placa" (input)="convertirAMayusculas('placa')">
+                <div class="captures-grid">
+                    <div class="captura" *ngIf="captura1">
+                        <span class="capture-label">Panorámica</span>
+                        <img [src]="captura1" alt="Captura de video">
+                        <button class="eliminar-captura" (click)="eliminarCaptura(1)">X</button>
                     </div>
-                    <div class="input-group">
-                        <input id="direccion" [(ngModel)]="direccion" placeholder="Ingrese la dirección" (input)="convertirAMayusculas('direccion')">
+
+                    <div class="captura" *ngIf="captura2">
+                        <span class="capture-label">Zoom</span>
+                        <img [src]="captura2" alt="Captura de video">
+                        <button class="eliminar-captura" (click)="eliminarCaptura(2)">X</button>
                     </div>
                 </div>
 
-                <!-- Botón Enviar -->
-                <button class="enviar-button" (click)="enviarDatos()">Enviar</button>
+                <!-- Inputs de datos -->
+                <div class="data-inputs">
+                    <div class="input-group">
+                        <label for="placa">Placa</label>
+                        <input id="placa" [(ngModel)]="placa" placeholder="Ingrese la placa"
+                            (input)="convertirAMayusculas('placa')">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="direccion">Dirección</label>
+                        <input id="direccion" [(ngModel)]="direccion" placeholder="Ingrese la dirección"
+                            (input)="convertirAMayusculas('direccion')">
+                    </div>
+                </div>
+
+                <!-- Botones de acción -->
+                <div class="action-buttons">
+                    <button class="capture-btn" (click)="capturarImagen()">Capturar</button>
+                    <button class="reject-btn" (click)="abrirModalRechazar()">Rechazar</button>
+                    <button class="enviar-button" [disabled]="!captura1 || !captura2 || enviandoDatos" (click)="enviarDatos()">
+                        <span *ngIf="!enviandoDatos">Enviar</span>
+                        <fa-icon *ngIf="enviandoDatos" [icon]="iconSpinner" class="spinning-icon"></fa-icon>
+                      </button>
+                </div>
             </div>
         </div>
     </main>
 
-    <!-- Contenedor para los botones -->
-    <div class="botones-container">
-        <button (click)="capturarImagen()">Capturar</button>
-        <button (click)="abrirModalRechazar()">Rechazar</button>
-    </div>
-
-    <!-- Modal de Rechazo -->
-<div class="modal" *ngIf="modalRechazarAbierta">
-    <div class="modal-contenido">
-      <span class="cerrar-modal" (click)="cerrarModalRechazar()">&times;</span>
-      <h2>Rechazar Video</h2>
-      
-      <!-- Imagen del video -->
-      <img [src]="imagenVideoRechazo" alt="Video rechazado" class="imagen-rechazo">
-  
-      <!-- Combobox de causales -->
-      <select [(ngModel)]="causalSeleccionada">
-        <option *ngFor="let causal of causales" [value]="causal.id_causal">
-          {{ causal.causal }}
-        </option>
-      </select>
-  
-      <!-- Botón para confirmar el rechazo -->
-      <button (click)="confirmarRechazo()">Confirmar Rechazo</button>
-    </div>
-  </div>
+    <div class="modal-overlay" *ngIf="modalRechazarAbierta">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title">Rechazar Video</h3>
+            <button class="modal-close" (click)="cerrarModalRechazar()">&times;</button>
+          </div>
+          
+          <div class="modal-body">
+            <img [src]="imagenVideoRechazo" alt="Video a rechazar" class="rejection-image">
+            
+            <select class="rejection-select" [(ngModel)]="causalSeleccionada" required #causalSelect>
+                <option value="" selected >Seleccione una causal</option>
+              <option *ngFor="let causal of causales" [value]="causal.id_causal">
+                {{ causal.causal }}
+              </option>
+            </select>
+          </div>
+          
+          <div class="modal-footer">
+            <button class="confirm-reject-btn" (click)="confirmarRechazo()">
+              Confirmar Rechazo
+            </button>
+          </div>
+        </div>
+      </div>
 
     <!-- Footer -->
     <footer class="dashboard-footer">
