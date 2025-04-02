@@ -1,10 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faArrowLeft, faDownload, faUpload, faSearch, faCloudUploadAlt, faFileDownload, faSpinner, faTimes,faUpload as faUploadSolid } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faDoorOpen, faDownload, faBroom, faUpload, faSearch, faCloudUploadAlt, faFileDownload, faSpinner, faTimes, faUpload as faUploadSolid } from '@fortawesome/free-solid-svg-icons';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { consultaLoteService } from '../services/consulta.lote.service';
+import { AuthService } from '../auth.service'; // Importa el servicio AuthService
 import Swal from 'sweetalert2';
 import { fadeAnimation } from '../animations'; // Ajusta la ruta según tu estructura
 
@@ -29,6 +30,9 @@ export class LoadingDownloadComponent {
   iconFileDownload = faFileDownload;
   iconSpinner = faSpinner;
   iconTimes = faTimes;
+  iconLogout = faDoorOpen;
+  iconBroom = faBroom;
+
   faSpin = true;
   iconUploadSolid = faUploadSolid; // Icono diferente para el área de drop
 
@@ -45,27 +49,50 @@ export class LoadingDownloadComponent {
 
   private router = inject(Router);
   private pendingFilesService = inject(consultaLoteService);
-
+  private authService = inject(AuthService); // Inyecta el servicio AuthService
 
   constructor() {
     const today = new Date();
-    this.maxDate = today.toISOString().split('T')[0];
+    this.maxDate = this.formatDateLocal(today); // Formato YYYY-MM-DD en hora local
     this.startDate = this.maxDate;
     this.endDate = this.maxDate;
+  }
+
+  // Función auxiliar para obtener fecha en formato YYYY-MM-DD (local)
+  formatDateLocal(date: Date): string {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 
   validateDate() {
     const today = new Date(this.maxDate);
     const start = new Date(this.startDate);
     const end = new Date(this.endDate);
-    
+
     // Validar que no sean futuras
     if (start > today) this.startDate = this.maxDate;
     if (end > today) this.endDate = this.maxDate;
-    
+
     // Validar que startDate <= endDate
     if (start > end) this.endDate = this.startDate;
-}
+  }
+
+  // Añade esta función para limpiar la búsqueda
+  clearSearch() {
+    // Restablece las fechas a hoy
+    const today = new Date();
+    this.startDate = this.formatDateLocal(today);
+    this.endDate = this.formatDateLocal(today);
+
+    // Limpia los resultados
+    this.pendingFiles = 0;
+    this.showResults = false;
+
+    // También podrías limpiar mensajes de error si lo deseas
+    this.errorMessage = null;
+  }
 
   getPendingFiles() {
     this.loading = true;
@@ -143,13 +170,13 @@ export class LoadingDownloadComponent {
   onFileSelected(event: any) {
     const file = event.target.files[0];
     if (file && !file.name.endsWith('.csv')) {
-        Swal.fire({
-            title: 'Formato incorrecto',
-            text: 'Por favor selecciona un archivo CSV',
-            icon: 'warning'
-        });
-        event.target.value = ''; // Limpia el input
-        return;
+      Swal.fire({
+        title: 'Formato incorrecto',
+        text: 'Por favor selecciona un archivo CSV',
+        icon: 'warning'
+      });
+      event.target.value = ''; // Limpia el input
+      return;
     }
     this.selectedFile = file;
   }
@@ -163,13 +190,13 @@ export class LoadingDownloadComponent {
       });
       return;
     }
-  
+
     this.loading = true;
-  
+
     this.pendingFilesService.uploadCsv(this.selectedFile).subscribe({
       next: (response) => {
         this.loading = false;
-        
+
         if (response.success) {
           // Caso exitoso
           Swal.fire({
@@ -242,7 +269,7 @@ export class LoadingDownloadComponent {
           </thead>
           <tbody>
     `;
-  
+
     errors.forEach((error, index) => {
       // Alternamos colores de fila para mejor legibilidad
       const rowColor = index % 2 === 0 ? '#ffffff' : '#f9f9f9';
@@ -253,13 +280,13 @@ export class LoadingDownloadComponent {
         </tr>
       `;
     });
-  
+
     html += `
           </tbody>
         </table>
       </div>
     `;
-  
+
     // Mostramos el modal con SweetAlert en estilo claro
     Swal.fire({
       title: 'Errores en el archivo',
@@ -286,38 +313,43 @@ export class LoadingDownloadComponent {
     }
   }
 
-   // Añade estos nuevos métodos para manejar el drag and drop
-   onDragOver(event: DragEvent) {
+  // Añade estos nuevos métodos para manejar el drag and drop
+  onDragOver(event: DragEvent) {
     event.preventDefault();
     event.stopPropagation();
     this.isDragOver = true;
-}
+  }
 
-onDragLeave(event: DragEvent) {
+  onDragLeave(event: DragEvent) {
     event.preventDefault();
     event.stopPropagation();
     this.isDragOver = false;
-}
+  }
 
-onDrop(event: DragEvent) {
+  onDrop(event: DragEvent) {
     event.preventDefault();
     event.stopPropagation();
     this.isDragOver = false;
-    
+
     if (event.dataTransfer?.files && event.dataTransfer.files.length > 0) {
-        const file = event.dataTransfer.files[0];
-        
-        // Validación básica de tipo de archivo (opcional)
-        if (!file.name.endsWith('.csv')) {
-            Swal.fire({
-                title: 'Formato incorrecto',
-                text: 'Por favor sube solo archivos CSV',
-                icon: 'error'
-            });
-            return;
-        }
-        
-        this.selectedFile = file;
+      const file = event.dataTransfer.files[0];
+
+      // Validación básica de tipo de archivo (opcional)
+      if (!file.name.endsWith('.csv')) {
+        Swal.fire({
+          title: 'Formato incorrecto',
+          text: 'Por favor sube solo archivos CSV',
+          icon: 'error'
+        });
+        return;
+      }
+
+      this.selectedFile = file;
     }
-}
+  }
+  // Función para redirigir al login
+  goToLogin() {
+    this.authService.logout(); // Llama al método logout() del servicio
+    this.router.navigate(['/login']); // Asegúrate de que la ruta '/login' esté configurada en tu RouterModule
+  }
 }

@@ -35,7 +35,7 @@ body {
   user-select: none;
   text-align: center;
   white-space: nowrap;
-  opacity: 0.55;
+  opacity: 0.90;
   overflow: hidden; /* Para contener el pseudo-elemento */
 }
 
@@ -135,6 +135,7 @@ body {
   cursor: pointer;
   transition: all 0.3s;
   font-family: 'Open Sans', sans-serif;
+  font-size: 20px;
 }
 
 .logout-button:hover {

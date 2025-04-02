@@ -1,6 +1,6 @@
 {
   "/services": {
-    "target": "http://sweagle.cerofatalidad.co", 
+    "target": "http://sweagle.swdev.co", 
     "secure": false, 
     "changeOrigin": true, 
     "pathRewrite": { "^/services": "" }, 

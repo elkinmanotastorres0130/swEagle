@@ -124,6 +124,7 @@
     cursor: pointer;
     transition: all 0.3s;
     font-family: 'Open Sans', sans-serif;
+    font-size: 20px;
 }
 
 .back-button:hover, .download-btn:hover {
@@ -156,7 +157,7 @@
 .download-section h2 {
     margin-top: 0;
     margin-bottom: 25px;
-    font-weight: 300;
+    font-weight: 700;
     font-size: 1.3rem;
     display: flex;
     align-items: center;
@@ -183,7 +184,6 @@
     cursor: pointer;
     display: grid;
     grid-template-columns: 150px 50px auto;
-    align-items: center;
     gap: 1rem;
 }
 
@@ -195,8 +195,7 @@
 
 .evidence-label {
     font-weight: 500;
-    text-align: right;
-    text-align: center;
+    text-align: left;
     font-weight: bold;
     min-width: 30px;
 }
@@ -239,7 +238,7 @@
 .custom-date-picker {
     background: rgba(255, 255, 255, 0.25);
     border: 1px solid rgba(255, 255, 255, 0.2);
-    color: #2d3748;
+    color: #000000;
     padding: 12px 20px;
     border-radius: 8px;
     font-family: inherit;
@@ -255,7 +254,8 @@
 }
 
 .custom-date-picker::-webkit-calendar-picker-indicator {
-    filter: invert(0.5);
+    filter: none;
+    color: #020202;
 }
 
 /* === Botones principales === */

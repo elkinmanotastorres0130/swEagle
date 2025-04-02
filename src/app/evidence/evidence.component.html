@@ -11,10 +11,13 @@
 
     <!-- Header -->
     <header class="minimal-header">
-        <button class="back-button" (click)="goBack()">
+        <button class="back-button" (click)="goBack()" title="Atrás" >
             <fa-icon [icon]="iconArrowLeft"></fa-icon>
         </button>
-        <h1 class="right-aligned-title">Generación de evidencias</h1>
+        <h1 class="right-aligned-title">Generación de Evidencias</h1>
+        <button class="back-button" (click)="goToLogin()" title="Cerrar sesión">
+            <fa-icon [icon]="iconLogout"></fa-icon> <!-- Ícono de puerta abierta -->
+        </button>
         <div class="header-spacer"></div>
     </header>
 
@@ -22,7 +25,7 @@
     <main class="minimal-main-content">
         <!-- Sección del Calendario -->
         <div class="glassmorphism-card calendar-section">
-            <h2><fa-icon [icon]="iconCalendar"></fa-icon> Seleccionar Fecha</h2>
+            <h3><fa-icon [icon]="iconCalendar"></fa-icon> Seleccionar Fecha</h3>
             <div class="date-picker-container">
                 <input type="date" [(ngModel)]="selectedDate" [max]="maxDate" class="custom-date-picker">
                 <button class="glassmorphism-btn primary consult-btn" (click)="cargarConteo(selectedDate)"
@@ -38,7 +41,7 @@
             <div class="evidence-grid">
                 <!-- Evidencias -->
                 <div class="evidence-row">
-                    <span class="evidence-label">Evidencias:</span>
+                    <span class="evidence-label">Formato Evidencias:</span>
                     <span class="evidence-counter">{{conteoEvidencias}}</span>
                     <button class="download-btn glassmorphism-btn accent"
                             [disabled]="conteoEvidencias === 0 || loadingEvidence"

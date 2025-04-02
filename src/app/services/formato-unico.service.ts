@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable,throwError  } from 'rxjs';
+import { timeout, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -17,17 +18,34 @@ export class FormatoUnicoService {
 
   descargarFormatoUnico(fecha: string): Observable<any> {
     const url = `${this.baseUrl}/generarmasivopdf?fecha=${fecha}`;
+    
     return this.http.get(url, {
       responseType: 'blob',
       observe: 'response'
-    });
+    }).pipe(
+      timeout(180000), // 30 segundos de timeout
+      catchError(error => {
+        if (error.name === 'TimeoutError') {
+          return throwError(() => new Error('Tiempo de espera agotado (30 segundos)'));
+        }
+        return throwError(() => error);
+      })
+    );
   }
 
   descargarFormatoEvidencia(fecha: string): Observable<any> {
     const formData = new FormData();
     formData.append('fecha_cargue', fecha);
   
-    return this.http.post(`${this.baseUrlEvidencia}`, formData);
+    return this.http.post(`${this.baseUrlEvidencia}`, formData).pipe(
+      timeout(180000), // 30 segundos de timeout
+      catchError(error => {
+        if (error.name === 'TimeoutError') {
+          return throwError(() => new Error('La solicitud tardó demasiado en responder'));
+        }
+        return throwError(() => error);
+      })
+    );
   }
 
   descargarLoteEvidenciaMPE1(archivo: string): Observable<Blob> {

@@ -1,13 +1,14 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faArrowLeft, faDownload, faUpload, faSearch, faCloudUploadAlt, faFileDownload, faSpinner, faTimes, faUpload as faUploadSolid, faCloudDownloadAlt, faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faDoorOpen,faDownload, faUpload, faSearch, faCloudUploadAlt, faFileDownload, faSpinner, faTimes, faUpload as faUploadSolid, faCloudDownloadAlt, faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FormatoUnicoService } from '../services/formato-unico.service';
 import { saveAs } from 'file-saver';
 import { fadeAnimation } from '../animations'; // Ajusta la ruta según tu estructura
 import Swal from 'sweetalert2';
+import { AuthService } from '../auth.service'; // Importa el servicio AuthService
 
 @Component({
   selector: 'app-evidence.component',
@@ -20,6 +21,7 @@ import Swal from 'sweetalert2';
 export class EvidenceComponent {
   selectedFile: File | null = null;
   // Definición de iconos
+  iconLogout = faDoorOpen;
   iconArrowLeft = faArrowLeft;
   iconDownload = faDownload;
   iconUpload = faUpload;
@@ -49,12 +51,21 @@ export class EvidenceComponent {
 
   private router = inject(Router);
   private formatoUnicoService = inject(FormatoUnicoService);
+  private authService= inject(AuthService); // Inyecta el servicio AuthService
 
   constructor() {
     const today = new Date();
-    this.maxDate = today.toISOString().split('T')[0];
+    this.maxDate = this.formatDateLocal(today);
     this.selectedDate = this.maxDate;
   }
+
+  // Función auxiliar para formatear fecha en hora local
+formatDateLocal(date: Date): string {
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
 
   ngOnInit() {
     this.setMaxDate();
@@ -132,12 +143,6 @@ export class EvidenceComponent {
                   window.URL.revokeObjectURL(url);
                   document.body.removeChild(a);
                   this.loadingEvidence = false;
-                  Swal.fire({
-                    icon: 'success',
-                    title: 'Éxito',
-                    text: response.msg,
-                    confirmButtonText: 'Aceptar'
-                  });
                 },
                 error: (pdfError) => {
                   console.error('Error al descargar PDF:', pdfError);
@@ -274,6 +279,12 @@ export class EvidenceComponent {
 
   goBack() {
     this.router.navigate(['/dashboard']);
+  }
+
+  // Función para redirigir al login
+  goToLogin() {
+    this.authService.logout(); // Llama al método logout() del servicio
+    this.router.navigate(['/login']); // Asegúrate de que la ruta '/login' esté configurada en tu RouterModule
   }
 
 }

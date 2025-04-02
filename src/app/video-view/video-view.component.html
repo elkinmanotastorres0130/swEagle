@@ -4,10 +4,13 @@
 
     <!-- Header -->
     <header class="dashboard-header">
-        <button class="logout-button" (click)="goBack()">
+        <button class="logout-button" (click)="goBack()" title="Atrás">
             <fa-icon [icon]="faArrowLeft"></fa-icon>
         </button>
-        <h1>Captura placa</h1>
+        <h1>Captura Placa</h1>
+        <button class="logout-button" (click)="goToLogin()" title="Cerrar sesión">
+            <fa-icon [icon]="iconLogout"></fa-icon> <!-- Ícono de puerta abierta -->
+        </button>
     </header>
 
     <!-- Contenido principal - Diseño de dos columnas -->
@@ -28,7 +31,7 @@
         <div class="controls-column">
             <!-- Sección de capturas -->
             <div class="captures-section">
-                <h3 class="captures-title">CAPTURAS</h3>
+                <h3 class="captures-title">Capturas</h3>
 
                 <div class="captures-grid">
                     <div class="captura" *ngIf="captura1">
@@ -48,14 +51,15 @@
                 <div class="data-inputs">
                     <div class="input-group">
                         <label for="placa">Placa</label>
-                        <input id="placa" [(ngModel)]="placa" placeholder="Ingrese la placa"
-                            (input)="convertirAMayusculas('placa')">
+                        <input id="placa" [(ngModel)]="placa" placeholder="Ej: AAA111" maxlength="6"
+                            (input)="aMayusculasYLimpiarPlaca()"  (keypress)="soloAlfanumerico($event)"
+                            title="Solo letras mayúsculas y números (6 caracteres)">
                     </div>
 
                     <div class="input-group">
                         <label for="direccion">Dirección</label>
-                        <input id="direccion" [(ngModel)]="direccion" placeholder="Ingrese la dirección"
-                            (input)="convertirAMayusculas('direccion')">
+                        <input id="direccion" [(ngModel)]="direccion" placeholder="Ej: CL 23-45 o AV 5B CL 10-15"
+                            (input)="aMayusculasYLimpiarDireccion()" (keypress)="soloCaracteresPermitidos($event)">
                     </div>
                 </div>
 
@@ -63,10 +67,11 @@
                 <div class="action-buttons">
                     <button class="capture-btn" (click)="capturarImagen()">Capturar</button>
                     <button class="reject-btn" (click)="abrirModalRechazar()">Rechazar</button>
-                    <button class="enviar-button" [disabled]="!captura1 || !captura2 || enviandoDatos" (click)="enviarDatos()">
+                    <button class="enviar-button" [disabled]="!captura1 || !captura2 || !placa || !direccion || enviandoDatos ||enviandoDatos"
+                        (click)="enviarDatos()">
                         <span *ngIf="!enviandoDatos">Enviar</span>
                         <fa-icon *ngIf="enviandoDatos" [icon]="iconSpinner" class="spinning-icon"></fa-icon>
-                      </button>
+                    </button>
                 </div>
             </div>
         </div>
@@ -74,29 +79,29 @@
 
     <div class="modal-overlay" *ngIf="modalRechazarAbierta">
         <div class="modal-content">
-          <div class="modal-header">
-            <h3 class="modal-title">Rechazar Video</h3>
-            <button class="modal-close" (click)="cerrarModalRechazar()">&times;</button>
-          </div>
-          
-          <div class="modal-body">
-            <img [src]="imagenVideoRechazo" alt="Video a rechazar" class="rejection-image">
-            
-            <select class="rejection-select" [(ngModel)]="causalSeleccionada" required #causalSelect>
-                <option value="" selected >Seleccione una causal</option>
-              <option *ngFor="let causal of causales" [value]="causal.id_causal">
-                {{ causal.causal }}
-              </option>
-            </select>
-          </div>
-          
-          <div class="modal-footer">
-            <button class="confirm-reject-btn" (click)="confirmarRechazo()">
-              Confirmar Rechazo
-            </button>
-          </div>
+            <div class="modal-header">
+                <h3 class="modal-title">Rechazar Video</h3>
+                <button class="modal-close" (click)="cerrarModalRechazar()">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <img [src]="imagenVideoRechazo" alt="Video a rechazar" class="rejection-image">
+
+                <select class="rejection-select" [(ngModel)]="causalSeleccionada" required #causalSelect>
+                    <option value="" selected>SELECCIONA UNA CAUSAL</option>
+                    <option *ngFor="let causal of causales" [value]="causal.id_causal">
+                        {{ causal.causal }}
+                    </option>
+                </select>
+            </div>
+
+            <div class="modal-footer">
+                <button class="confirm-reject-btn" (click)="confirmarRechazo()">
+                    Confirmar Rechazo
+                </button>
+            </div>
         </div>
-      </div>
+    </div>
 
     <!-- Footer -->
     <footer class="dashboard-footer">

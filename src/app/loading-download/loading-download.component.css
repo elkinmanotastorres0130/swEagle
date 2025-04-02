@@ -46,7 +46,7 @@
     user-select: none;
     text-align: center;
     white-space: nowrap;
-    opacity: 0.55;
+    opacity: 0.90;
     overflow: hidden; /* Para contener el pseudo-elemento */
   }
   
@@ -144,8 +144,9 @@
 }
 
 .date-picker input[type="date"]::-webkit-calendar-picker-indicator {
-    filter: invert(1);
+    filter: none;
     opacity: 0.8;
+    color: rgb(3, 3, 3);
 }
 
 /* Estilo para el separador */
@@ -171,7 +172,7 @@
 
 /* Deshabilitar botón cuando no hay archivos */
 .glassmorphism-btn:disabled {
-    opacity: 0.5;
+    opacity: 0.55;
     cursor: not-allowed;
     transform: none !important;
 }
@@ -189,6 +190,7 @@
     justify-content: center;
     transition: all 0.3s;
     z-index: 2;
+    font-size: 20px;
 }
 
 .back-button:hover {
@@ -235,7 +237,7 @@
 .glassmorphism-card h2 {
     margin-top: 0;
     margin-bottom: 20px;
-    font-weight: 300;
+    font-weight: 700;
     font-size: 1.3rem;
     display: flex;
     align-items: center;
@@ -263,7 +265,7 @@
 .pending-files {
     margin: 25px 0;
     font-family: 'Open Sans', sans-serif;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .counter {
@@ -299,8 +301,8 @@
     margin-bottom: 15px;
     overflow: hidden;
     border-radius: 8px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .file-info {
@@ -324,7 +326,7 @@
 .clear-file-btn {
     background: transparent;
     border: none;
-    color: #ff6b6b;
+    color: #a32121;
     cursor: pointer;
     padding: 5px;
     display: flex;
@@ -341,7 +343,7 @@
 /* Área de Drag and Drop */
 .file-upload-wrapper {
     position: relative;
-    border: 2px dashed rgba(255, 255, 255, 0.3);
+    border: 2px dashed rgba(0, 0, 0, 0.3);
     border-radius: 8px;
     transition: all 0.3s ease;
     padding: 2rem;
@@ -356,7 +358,7 @@
 
 .drag-over {
     border-color: #38b6ff !important;
-    background: rgba(56, 182, 255, 0.1) !important;
+    background: rgba(247, 247, 247, 0.1) !important;
 }
 
 .drop-instructions {
@@ -372,9 +374,9 @@
 
 .upload-icon {
     font-size: 2rem;
-    opacity: 0.7;
+    opacity: 0.80;
     margin-bottom: 10px;
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(2, 2, 2, 0.7);
 }
 
 /* Contenedor de botones */
@@ -434,6 +436,22 @@
 .glassmorphism-btn.accent {
     background: rgba(132, 94, 247, 0.15);
     border-color: rgba(132, 94, 247, 0.3);
+} 
+
+/* Estilo para el botón de limpiar */
+.glassmorphism-btn.danger {
+    background: rgba(255, 107, 107, 0.15);
+    border-color: rgba(255, 107, 107, 0.3);
+    margin-left: 10px; /* Espacio a la izquierda del botón limpiar */
+}
+
+.glassmorphism-btn.danger:hover:not(:disabled) {
+    background: rgba(255, 107, 107, 0.25);
+    color: #ff5252;
+}
+
+.glassmorphism-btn.danger fa-icon {
+    color: inherit;
 }
 
 .glassmorphism-btn fa-icon {
@@ -461,7 +479,7 @@
     bottom: 0;
     border-radius: 16px;
     padding: 1px;
-    background: linear-gradient(135deg, rgba(56, 182, 255, 0.3), rgba(132, 94, 247, 0.3));
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(116, 73, 248, 0.3));
     -webkit-mask: linear-gradient(#000000 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;

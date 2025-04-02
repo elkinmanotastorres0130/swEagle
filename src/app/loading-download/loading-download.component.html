@@ -11,10 +11,13 @@
 
     <!-- Header minimalista -->
     <header class="minimal-header">
-        <button class="back-button" (click)="goBack()">
+        <button class="back-button" (click)="goBack()" title="Atrás">
             <fa-icon [icon]="iconArrowLeft"></fa-icon>
         </button>
-        <h1 class="right-aligned-title">Consultar propietario</h1>
+        <h1 class="right-aligned-title">Consultar Propietario</h1>
+        <button class="back-button" (click)="goToLogin()" title="Cerrar sesión">
+            <fa-icon [icon]="iconLogout"></fa-icon> <!-- Ícono de puerta abierta -->
+        </button>
         <div class="header-spacer"></div>
     </header>
 
@@ -43,13 +46,18 @@
             <!-- Resultados -->
             <div class="pending-files" *ngIf="showResults">
                 <span class="counter">{{ pendingFiles }}</span>
-                <span class="label">Pendiente(s)</span>
+                <span class="label">Pendientes</span>
             </div>
 
             <button class="glassmorphism-btn accent" (click)="downloadCsv()" [disabled]="pendingFiles === 0">
                 <fa-icon [icon]="loading ? iconSpinner : iconFileDownload" [animation]="loading ? 'spin' : undefined">
                 </fa-icon> Descargar Archivos
             </button>
+
+            <button class="glassmorphism-btn danger" (click)="clearSearch()" [disabled]="!showResults">
+                <fa-icon [icon]="iconBroom"></fa-icon> Limpiar
+            </button>
+
         </section>
 
         <!-- Sección de Carga con Drag and Drop -->

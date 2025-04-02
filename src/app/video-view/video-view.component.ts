@@ -6,10 +6,10 @@ import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontaweso
 import { VideosService } from '../services/videos.service'; // Importa el servicio de videos
 import { OperacionService } from '../services/operacion.service'; // Importa de las infracciones
 import { CausalesService } from '../services/causales.service'; // Importar servicio de causales de rechazo
-import { faArrowLeft, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faSpinner,faDoorOpen } from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2';
 import { fadeAnimation } from '../animations'; // Ajusta la ruta según tu estructura
-
+import { AuthService } from '../auth.service'; // Importa el servicio AuthService
 
 // Definir la interfaz para la respuesta del servicio
 export interface VideoResponse {
@@ -50,6 +50,7 @@ export class VideoViewComponent {
   captura2: string | null = null; // URL de la segunda captura
   currentVideoIndex: number = 0; // Índice del video actual en el array (siempre será 0)
   enviandoDatos = false;
+  iconLogout = faDoorOpen;
   iconSpinner = faSpinner;
 
   // Variables para la modal de rechazo
@@ -62,14 +63,16 @@ export class VideoViewComponent {
   private placaRegex = /^[A-Z]{1,3}-?\d{1,4}$/;
 
   // Expresión regular para la dirección (letras, números, espacios y algunos caracteres especiales)
-  private direccionRegex = /^[a-zA-Z0-9\s#\-.,]+$/;
+  private direccionRegex = /^(AV|CL|CR|TRV|VIA|KM|DIAGONAL)\s\d+[A-Z]?(?:-\d+[A-Z]?)?(?:\s(AV|CL|CR|TRV|VIA|KM|DIAGONAL)\s\d+[A-Z]?(?:-\d+[A-Z]?)?)*$/;
 
   // Inyecta el servicio Router en el constructor
   constructor(
     private Router: Router,
     private videosService: VideosService,
     private operacionService: OperacionService,
-    private causalesService: CausalesService
+    private causalesService: CausalesService,
+    private authService: AuthService, // Inyecta el servicio AuthService
+
   ) { }
 
   // Método que se ejecuta al inicializar el componente
@@ -99,7 +102,16 @@ export class VideoViewComponent {
           // Cargar el video actual
           this.cargarVideo(this.videoIndex);
         } else {
-          Swal.fire('Advertencia', 'No se encontraron videos.', 'warning');
+          Swal.fire({
+            title: 'Advertencia',
+            text: 'No se encontraron videos pendientes por procesar.',
+            icon: 'warning',
+            confirmButtonText: 'OK'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.Router.navigate(['/dashboard']);
+            }
+          });
         }
       },
       error: (error) => {
@@ -182,16 +194,15 @@ export class VideoViewComponent {
   // Método para manejar el envío de datos
   enviarDatos() {
     this.enviandoDatos = true; // Activar spinner
-    
+
     // Validar los campos
     const validacion = this.validarCampos();
-
+   
     if (!validacion.valido) {
       this.enviandoDatos = false; // Desactivar spinner
       Swal.fire('Error', validacion.mensaje, 'error');
       return;
     }
-
     if (!this.placa || !this.direccion || !this.captura1 || !this.captura2) {
       this.enviandoDatos = false; // Desactivar spinner
       Swal.fire('Error', 'Por favor, complete todos los campos y capture ambas imágenes.', 'error');
@@ -203,7 +214,7 @@ export class VideoViewComponent {
 
     const imagen1 = this.captura1.split(',')[1]; // Extrae solo el base64
     const imagen2 = this.captura2.split(',')[1]; // Extrae solo el base64
-
+   
     this.operacionService.enviarDatos(id_video, url_video, imagen1, imagen2, this.placa, this.direccion).subscribe({
       next: (response) => {
         if (response.success) {
@@ -226,14 +237,51 @@ export class VideoViewComponent {
     });
   }
 
-  // Método para convertir a mayúsculas
-  convertirAMayusculas(campo: string) {
-    if (campo === 'placa') {
-      this.placa = this.placa.toUpperCase();
-    } else if (campo === 'direccion') {
-      this.direccion = this.direccion.toUpperCase();
-    }
+  // Método para el keypress (evita caracteres no deseados)
+  soloAlfanumerico(event: KeyboardEvent): boolean {
+    const charCode = event.key.charCodeAt(0);
+    return (charCode >= 48 && charCode <= 57) || // Números (0-9)
+      (charCode >= 65 && charCode <= 90) || // Letras mayúsculas (A-Z)
+      (charCode >= 97 && charCode <= 122);  // Letras minúsculas (a-z) (las convertiremos)
   }
+
+  soloCaracteresPermitidos(event: KeyboardEvent): boolean {
+    const input = event.target as HTMLInputElement;
+    const key = event.key;
+    
+    // Permitir teclas de control
+    if ([
+      'Backspace', 'Delete', 'Tab', 'ArrowLeft', 'ArrowRight', 
+      'Home', 'End', 'Enter'
+    ].includes(key)) return true;
+  
+    // Validar caracteres permitidos
+    if (!/^[A-Za-z0-9\s-#]$/.test(key)) return false;
+  
+    // Auto-mayúsculas para letras
+    if (/[a-z]/.test(key)) {
+      event.preventDefault();
+      const start = input.selectionStart || 0;
+      const end = input.selectionEnd || 0;
+      input.value = input.value.slice(0, start) + key.toUpperCase() + input.value.slice(end);
+      input.setSelectionRange(start + 1, start + 1);
+      return false;
+    }
+  
+    return true;
+  }
+
+
+  // Método para el input (convierte a mayúsculas y limpia)
+  aMayusculasYLimpiarPlaca() {
+    this.placa = this.placa.toUpperCase().replace(/[^A-Z0-9]/g, '').substring(0, 6);
+  }
+
+// Método para el input (convierte a mayúsculas y limpia)
+aMayusculasYLimpiarDireccion() {
+  this.direccion = this.direccion.toUpperCase()
+                   .replace(/[^A-Z0-9\s#-]/g, '');
+}
 
   // Método para validar la placa
   validarPlaca(placa: string): boolean {
@@ -388,7 +436,7 @@ export class VideoViewComponent {
     this.captura2 = null;
     this.placa = '';
     this.direccion = '';
-  
+
     // Obtener la lista de videos nuevamente
     this.obtenerVideos();
   }
@@ -406,4 +454,10 @@ export class VideoViewComponent {
   goBack() {
     this.Router.navigate(['/dashboard']); // Cambia '/dashboard' por la ruta que desees
   }
+
+    // Función para redirigir al login
+    goToLogin() {
+      this.authService.logout(); // Llama al método logout() del servicio
+      this.Router.navigate(['/login']); // Asegúrate de que la ruta '/login' esté configurada en tu RouterModule
+    }
 }
